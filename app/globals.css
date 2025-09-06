@@ -10,7 +10,7 @@
 
 @layer components {
   .btn-primary {
-    @apply bg-crypto-primary hover:bg-crypto-secondary text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200;
+    @apply bg-crypto-primary hover:bg-crypto-secondary text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200 shadow-md hover:shadow-lg;
   }
   
   .btn-secondary {
@@ -52,11 +52,11 @@
 
 /* Certificate styles */
 .certificate-container {
-  @apply min-h-screen bg-gray-50 py-8 px-4;
+  @apply min-h-screen bg-gradient-to-br from-yellow-50 to-amber-50 py-8 px-4;
 }
 
 .certificate {
-  @apply max-w-4xl mx-auto bg-white rounded-lg shadow-xl border-4 border-crypto-primary p-8;
+  @apply max-w-4xl mx-auto bg-white rounded-lg shadow-xl border-4 border-crypto-primary p-8 bg-gradient-to-br from-white to-yellow-50;
 }
 
 .certificate-header {

@@ -38,7 +38,7 @@ export default async function HomePage() {
         )}
       </div>
 
-      <div className="bg-crypto-primary rounded-lg p-8 text-white text-center">
+      <div className="bg-gradient-to-r from-crypto-primary to-crypto-secondary rounded-lg p-8 text-white text-center shadow-xl">
         <h3 className="text-2xl font-bold mb-4">Ready to Start Learning?</h3>
         <p className="text-lg mb-6 opacity-90">
           Choose a quiz above to begin your crypto education journey. 

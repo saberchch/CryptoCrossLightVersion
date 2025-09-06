@@ -22,30 +22,30 @@ export function generateCertificatePDF(data: CertificateData): void {
   const pageWidth = doc.internal.pageSize.getWidth();
   const pageHeight = doc.internal.pageSize.getHeight();
   
-  // Background color
-  doc.setFillColor(240, 248, 255);
+  // Background color (golden gradient effect)
+  doc.setFillColor(255, 251, 235);
   doc.rect(0, 0, pageWidth, pageHeight, 'F');
   
-  // Border
-  doc.setDrawColor(59, 130, 246);
+  // Border (golden)
+  doc.setDrawColor(245, 158, 11);
   doc.setLineWidth(3);
   doc.rect(15, 15, pageWidth - 30, pageHeight - 30);
   
-  // Inner border
-  doc.setDrawColor(30, 64, 175);
+  // Inner border (darker golden)
+  doc.setDrawColor(217, 119, 6);
   doc.setLineWidth(1);
   doc.rect(20, 20, pageWidth - 40, pageHeight - 40);
   
   // Title
   doc.setFontSize(28);
   doc.setFont('helvetica', 'bold');
-  doc.setTextColor(30, 64, 175);
+  doc.setTextColor(217, 119, 6);
   doc.text('CERTIFICATE OF COMPLETION', pageWidth / 2, 50, { align: 'center' });
   
   // Subtitle
   doc.setFontSize(16);
   doc.setFont('helvetica', 'normal');
-  doc.setTextColor(100, 100, 100);
+  doc.setTextColor(120, 113, 108);
   doc.text('Crypto Learning Platform', pageWidth / 2, 65, { align: 'center' });
   
   // Certificate ID
@@ -62,7 +62,7 @@ export function generateCertificatePDF(data: CertificateData): void {
   // Student name
   doc.setFontSize(24);
   doc.setFont('helvetica', 'bold');
-  doc.setTextColor(30, 64, 175);
+  doc.setTextColor(217, 119, 6);
   doc.text(data.studentName, pageWidth / 2, 130, { align: 'center' });
   
   // Completion text
@@ -74,7 +74,7 @@ export function generateCertificatePDF(data: CertificateData): void {
   // Quiz title
   doc.setFontSize(18);
   doc.setFont('helvetica', 'bold');
-  doc.setTextColor(30, 64, 175);
+  doc.setTextColor(217, 119, 6);
   doc.text(`"${data.quizTitle}"`, pageWidth / 2, 170, { align: 'center' });
   
   // Score

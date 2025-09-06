@@ -9,9 +9,9 @@ module.exports = {
     extend: {
       colors: {
         crypto: {
-          primary: '#3B82F6',
-          secondary: '#1E40AF',
-          accent: '#F59E0B',
+          primary: '#F59E0B',
+          secondary: '#D97706',
+          accent: '#FCD34D',
           success: '#10B981',
           danger: '#EF4444',
         }
