@@ -1,0 +1,195 @@
+{
+  "id": "blockchain-dev-cert",
+  "title": "Blockchain Developer Certification Quiz",
+  "description": "A comprehensive certification quiz that tests your knowledge of blockchain fundamentals, smart contracts, consensus mechanisms, security, and decentralized applications.",
+  "difficulty": "Intermediate",
+  "duration": 45,
+  "passingScore": 70,
+  "questions": [
+    {
+      "id": 1,
+      "question": "Which of the following best defines a blockchain?",
+      "type": "multiple-choice",
+      "options": [
+        "A centralized database managed by a single entity",
+        "A distributed ledger maintained by multiple nodes",
+        "A peer-to-peer chat application",
+        "An encrypted file storage system"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Blockchain is a distributed ledger where multiple participants maintain a synchronized copy of the data without relying on a central authority."
+    },
+    {
+      "id": 2,
+      "question": "In Ethereum, what is 'gas' primarily used for?",
+      "type": "multiple-choice",
+      "options": [
+        "Storing files on IPFS",
+        "Paying transaction and computation costs",
+        "Minting NFTs",
+        "Increasing block size"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Gas is the fee paid to miners/validators to process transactions and execute smart contracts on Ethereum."
+    },
+    {
+      "id": 3,
+      "question": "Bitcoin uses Proof of Stake (PoS) as its consensus mechanism.",
+      "type": "true-false",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Bitcoin uses Proof of Work (PoW), not Proof of Stake (PoS)."
+    },
+    {
+      "id": 4,
+      "question": "Which of these programming languages is most commonly used for writing Ethereum smart contracts?",
+      "type": "multiple-choice",
+      "options": [
+        "Solidity",
+        "Python",
+        "Rust",
+        "Go"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Solidity is the primary language for writing Ethereum smart contracts."
+    },
+    {
+      "id": 5,
+      "question": "What is a smart contract?",
+      "type": "multiple-choice",
+      "options": [
+        "A legal document written by lawyers",
+        "An automated program that executes predefined rules on a blockchain",
+        "A private agreement between two banks",
+        "A chat application for decentralized messaging"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Smart contracts are self-executing programs with the rules encoded on the blockchain."
+    },
+    {
+      "id": 6,
+      "question": "In Proof of Stake, validators are chosen based on the amount of cryptocurrency they lock as collateral.",
+      "type": "true-false",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correctAnswer": 0,
+      "explanation": "In PoS, validators are selected based on the amount of tokens they stake, making attacks costly."
+    },
+    {
+      "id": 7,
+      "question": "Which of the following best describes a blockchain fork?",
+      "type": "multiple-choice",
+      "options": [
+        "A cryptographic algorithm for hashing",
+        "A divergence in the blockchain where different versions are created",
+        "A new programming language",
+        "A method to compress blocks"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Forks occur when the blockchain splits into two versions due to protocol updates or disagreements."
+    },
+    {
+      "id": 8,
+      "question": "Which of these is a Layer 2 scaling solution for Ethereum?",
+      "type": "multiple-choice",
+      "options": [
+        "Polygon",
+        "Bitcoin Lightning Network",
+        "Polkadot",
+        "Chainlink"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Polygon is a Layer 2 scaling solution that improves Ethereum’s transaction throughput and reduces costs."
+    },
+    {
+      "id": 9,
+      "question": "NFTs (Non-Fungible Tokens) are identical and interchangeable with each other.",
+      "type": "true-false",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correctAnswer": 1,
+      "explanation": "NFTs are unique digital assets that are not interchangeable, unlike fungible tokens such as ETH or BTC."
+    },
+    {
+      "id": 10,
+      "question": "What does the term 'immutability' in blockchain mean?",
+      "type": "multiple-choice",
+      "options": [
+        "Data on the blockchain cannot be deleted or modified",
+        "Blockchain data can be updated by administrators",
+        "It refers to the encryption of private keys",
+        "It is the process of token staking"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Immutability means that once data is written on the blockchain, it cannot be altered or deleted."
+    },
+    {
+      "id": 11,
+      "question": "Which consensus mechanism is considered more energy-efficient?",
+      "type": "multiple-choice",
+      "options": [
+        "Proof of Work (PoW)",
+        "Proof of Stake (PoS)",
+        "Delegated Proof of Burn (DPoB)",
+        "Proof of Authority (PoA)"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Proof of Stake is more energy-efficient since it does not require miners to solve energy-intensive puzzles."
+    },
+    {
+      "id": 12,
+      "question": "Hash functions in blockchain ensure data integrity.",
+      "type": "true-false",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Hashing provides a unique fingerprint of data. Any small change alters the hash, ensuring data integrity."
+    },
+    {
+      "id": 13,
+      "question": "Which of the following best describes a 'DApp' (Decentralized Application)?",
+      "type": "multiple-choice",
+      "options": [
+        "A mobile app that works offline",
+        "An application that runs on a blockchain without central authority",
+        "A private cloud database application",
+        "A web app hosted on a centralized server"
+      ],
+      "correctAnswer": 1,
+      "explanation": "DApps run on blockchain networks using smart contracts and do not rely on centralized servers."
+    },
+    {
+      "id": 14,
+      "question": "What is the primary purpose of Solidity's 'require()' function?",
+      "type": "multiple-choice",
+      "options": [
+        "To stop contract execution if a condition is not met",
+        "To encrypt contract variables",
+        "To deploy a smart contract",
+        "To loop over arrays"
+      ],
+      "correctAnswer": 0,
+      "explanation": "require() is used to enforce conditions in smart contracts; if the condition fails, the transaction is reverted."
+    },
+    {
+      "id": 15,
+      "question": "Interoperability in blockchain refers to the ability of different blockchains to communicate and share data.",
+      "type": "true-false",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Interoperability enables cross-chain communication, allowing different blockchain networks to exchange data and value."
+    }
+  ]
+}

@@ -1,0 +1,72 @@
+{
+  "id": "defi-fundamentals",
+  "title": "DeFi Fundamentals",
+  "description": "Understanding Decentralized Finance concepts, protocols, and applications.",
+  "difficulty": "Advanced",
+  "duration": 20,
+  "passingScore": 80,
+  "questions": [
+    {
+      "id": 1,
+      "question": "What does DeFi stand for?",
+      "type": "multiple-choice",
+      "options": [
+        "Decentralized Finance",
+        "Digital Finance",
+        "Distributed Finance",
+        "Defined Finance"
+      ],
+      "correctAnswer": 0,
+      "explanation": "DeFi stands for Decentralized Finance, referring to financial services built on blockchain."
+    },
+    {
+      "id": 2,
+      "question": "What is a DEX?",
+      "type": "multiple-choice",
+      "options": [
+        "Digital Exchange",
+        "Decentralized Exchange",
+        "Direct Exchange",
+        "Dynamic Exchange"
+      ],
+      "correctAnswer": 1,
+      "explanation": "DEX stands for Decentralized Exchange, allowing peer-to-peer trading without intermediaries."
+    },
+    {
+      "id": 3,
+      "question": "What is yield farming in DeFi?",
+      "type": "multiple-choice",
+      "options": [
+        "Growing crops on blockchain",
+        "Earning rewards by providing liquidity to DeFi protocols",
+        "Mining cryptocurrencies",
+        "Trading agricultural tokens"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Yield farming involves earning rewards by providing liquidity to DeFi protocols."
+    },
+    {
+      "id": 4,
+      "question": "What is impermanent loss?",
+      "type": "multiple-choice",
+      "options": [
+        "Loss of private keys",
+        "Temporary loss when providing liquidity to AMMs",
+        "Loss due to smart contract bugs",
+        "Loss from market volatility"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Impermanent loss occurs when providing liquidity to AMMs due to price changes of paired assets."
+    },
+    {
+      "id": 5,
+      "question": "DeFi protocols eliminate the need for traditional financial intermediaries.",
+      "type": "true-false",
+      "options": ["True", "False"],
+      "correctAnswer": 0,
+      "explanation": "DeFi protocols aim to eliminate traditional financial intermediaries through smart contracts."
+    }
+  ]
+}
+
+

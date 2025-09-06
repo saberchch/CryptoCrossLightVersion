@@ -1,0 +1,72 @@
+{
+  "id": "ethereum-smart-contracts",
+  "title": "Ethereum & Smart Contracts",
+  "description": "Learn about Ethereum blockchain and smart contract development.",
+  "difficulty": "Intermediate",
+  "duration": 15,
+  "passingScore": 75,
+  "questions": [
+    {
+      "id": 1,
+      "question": "What is Ethereum?",
+      "type": "multiple-choice",
+      "options": [
+        "A Bitcoin competitor",
+        "A blockchain platform for smart contracts",
+        "A cryptocurrency exchange",
+        "A digital wallet"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Ethereum is a blockchain platform that enables the creation of smart contracts and decentralized applications."
+    },
+    {
+      "id": 2,
+      "question": "What programming language is primarily used for Ethereum smart contracts?",
+      "type": "multiple-choice",
+      "options": [
+        "JavaScript",
+        "Python",
+        "Solidity",
+        "C++"
+      ],
+      "correctAnswer": 2,
+      "explanation": "Solidity is the primary programming language used for writing Ethereum smart contracts."
+    },
+    {
+      "id": 3,
+      "question": "What is Gas in Ethereum?",
+      "type": "multiple-choice",
+      "options": [
+        "A type of cryptocurrency",
+        "The fee paid for transactions and smart contract execution",
+        "A mining reward",
+        "A blockchain consensus mechanism"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Gas is the fee paid in Ether for transactions and smart contract execution on Ethereum."
+    },
+    {
+      "id": 4,
+      "question": "Smart contracts are automatically executed when conditions are met.",
+      "type": "true-false",
+      "options": ["True", "False"],
+      "correctAnswer": 0,
+      "explanation": "Smart contracts automatically execute when predefined conditions are met, without human intervention."
+    },
+    {
+      "id": 5,
+      "question": "What is the native cryptocurrency of Ethereum?",
+      "type": "multiple-choice",
+      "options": [
+        "Bitcoin",
+        "Ether (ETH)",
+        "Litecoin",
+        "Ripple"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Ether (ETH) is the native cryptocurrency of the Ethereum blockchain."
+    }
+  ]
+}
+
+

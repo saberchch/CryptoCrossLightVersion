@@ -1,0 +1,33 @@
+{
+  "id": "sample-quiz",
+  "title": "Sample Quiz Title",
+  "description": "A brief description of what this quiz covers.",
+  "difficulty": "Beginner",
+  "duration": 10,
+  "passingScore": 70,
+  "questions": [
+    {
+      "id": 1,
+      "question": "What is the correct answer?",
+      "type": "multiple-choice",
+      "options": [
+        "Option A",
+        "Option B",
+        "Option C",
+        "Option D"
+      ],
+      "correctAnswer": 0,
+      "explanation": "This is why Option A is correct."
+    },
+    {
+      "id": 2,
+      "question": "This statement is true.",
+      "type": "true-false",
+      "options": ["True", "False"],
+      "correctAnswer": 0,
+      "explanation": "This statement is indeed true because..."
+    }
+  ]
+}
+
+

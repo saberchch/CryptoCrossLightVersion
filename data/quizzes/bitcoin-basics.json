@@ -1,0 +1,72 @@
+{
+  "id": "bitcoin-basics",
+  "title": "Bitcoin Fundamentals",
+  "description": "Test your knowledge of Bitcoin basics including blockchain, mining, and transactions.",
+  "difficulty": "Beginner",
+  "duration": 10,
+  "passingScore": 70,
+  "questions": [
+    {
+      "id": 1,
+      "question": "What is Bitcoin?",
+      "type": "multiple-choice",
+      "options": [
+        "A physical coin made of gold",
+        "A digital cryptocurrency",
+        "A type of bank account",
+        "A stock market index"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Bitcoin is a digital cryptocurrency that operates on a decentralized network."
+    },
+    {
+      "id": 2,
+      "question": "What technology does Bitcoin use to secure transactions?",
+      "type": "multiple-choice",
+      "options": [
+        "Centralized servers",
+        "Blockchain",
+        "Email encryption",
+        "Credit card networks"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Bitcoin uses blockchain technology to create a secure, decentralized ledger of transactions."
+    },
+    {
+      "id": 3,
+      "question": "What is the maximum number of Bitcoins that can ever exist?",
+      "type": "multiple-choice",
+      "options": [
+        "10 million",
+        "21 million",
+        "100 million",
+        "Unlimited"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Bitcoin has a maximum supply of 21 million coins, making it deflationary."
+    },
+    {
+      "id": 4,
+      "question": "What is 'mining' in Bitcoin?",
+      "type": "multiple-choice",
+      "options": [
+        "Digging for physical coins",
+        "Creating new Bitcoins and validating transactions",
+        "Buying Bitcoins from exchanges",
+        "Storing Bitcoins in wallets"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Mining is the process of creating new Bitcoins and validating transactions on the network."
+    },
+    {
+      "id": 5,
+      "question": "Bitcoin transactions are irreversible once confirmed.",
+      "type": "true-false",
+      "options": ["True", "False"],
+      "correctAnswer": 0,
+      "explanation": "Bitcoin transactions are irreversible once they are confirmed on the blockchain."
+    }
+  ]
+}
+
+
