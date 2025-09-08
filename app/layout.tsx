@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'Crypto Learning Platform',
+  title: 'CryptoCross',
   description: 'Learn cryptocurrency fundamentals through interactive quizzes and earn certificates',
 }
 
@@ -20,7 +20,7 @@ export default function RootLayout({
               <div className="flex justify-between items-center h-16">
                 <div className="flex items-center">
                   <h1 className="text-2xl font-bold text-crypto-primary bg-gradient-to-r from-crypto-primary to-crypto-secondary bg-clip-text text-transparent">
-                    Crypto Learning Platform
+                    CryptoCross
                   </h1>
                 </div>
                 <nav className="flex space-x-8">

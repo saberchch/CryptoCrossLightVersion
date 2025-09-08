@@ -1,0 +1,193 @@
+{
+  "id": "web3-fundamentals-cert",
+  "title": "Web3 Fundamentals Certification Quiz",
+  "description": "This quiz tests your knowledge of Web3 technologies, decentralized finance, wallets, NFTs, and the future of the decentralized internet.",
+  "difficulty": "Beginner",
+  "duration": 40,
+  "passingScore": 70,
+  "questions": [
+    {
+      "id": 1,
+      "question": "What does 'Web3' primarily refer to?",
+      "type": "multiple-choice",
+      "options": [
+        "A centralized version of the internet",
+        "A decentralized internet powered by blockchain",
+        "The third version of HTML",
+        "A social media platform"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Web3 refers to a decentralized internet built on blockchain and peer-to-peer technologies."
+    },
+    {
+      "id": 2,
+      "question": "Which of these is an example of a Web3 wallet?",
+      "type": "multiple-choice",
+      "options": [
+        "MetaMask",
+        "PayPal",
+        "Google Drive",
+        "Dropbox"
+      ],
+      "correctAnswer": 0,
+      "explanation": "MetaMask is a popular non-custodial Web3 wallet that allows users to store tokens and interact with DApps."
+    },
+    {
+      "id": 3,
+      "question": "A private key should always be shared with trusted exchanges.",
+      "type": "true-false",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Private keys must never be shared. Whoever has access to it can fully control your funds."
+    },
+    {
+      "id": 4,
+      "question": "What is the main role of a decentralized exchange (DEX)?",
+      "type": "multiple-choice",
+      "options": [
+        "To allow trading without intermediaries",
+        "To issue new cryptocurrencies",
+        "To replace banks entirely",
+        "To secure blockchain networks"
+      ],
+      "correctAnswer": 0,
+      "explanation": "DEXs like Uniswap allow users to trade directly without centralized intermediaries."
+    },
+    {
+      "id": 5,
+      "question": "In DeFi, 'yield farming' refers to:",
+      "type": "multiple-choice",
+      "options": [
+        "Growing crops using blockchain",
+        "Earning rewards by providing liquidity or staking assets",
+        "A consensus algorithm",
+        "A type of mining hardware"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Yield farming involves earning rewards by providing liquidity or staking assets in DeFi protocols."
+    },
+    {
+      "id": 6,
+      "question": "NFTs are stored as data on the blockchain.",
+      "type": "true-false",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correctAnswer": 0,
+      "explanation": "NFTs are tokens stored on a blockchain that represent unique digital assets."
+    },
+    {
+      "id": 7,
+      "question": "What does 'DAO' stand for?",
+      "type": "multiple-choice",
+      "options": [
+        "Decentralized Anonymous Organization",
+        "Digital Asset Ownership",
+        "Decentralized Autonomous Organization",
+        "Data Access Operator"
+      ],
+      "correctAnswer": 2,
+      "explanation": "DAO stands for Decentralized Autonomous Organization — a group governed by smart contracts and community votes."
+    },
+    {
+      "id": 8,
+      "question": "What is the native cryptocurrency of Ethereum?",
+      "type": "multiple-choice",
+      "options": [
+        "BTC",
+        "ETH",
+        "USDT",
+        "DOT"
+      ],
+      "correctAnswer": 1,
+      "explanation": "ETH (Ether) is the native currency of the Ethereum network."
+    },
+    {
+      "id": 9,
+      "question": "Web3 wallets can be custodial or non-custodial.",
+      "type": "true-false",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Custodial wallets are controlled by third parties, while non-custodial wallets give users full control of private keys."
+    },
+    {
+      "id": 10,
+      "question": "What is the main function of IPFS in Web3?",
+      "type": "multiple-choice",
+      "options": [
+        "To store decentralized files",
+        "To mine cryptocurrencies",
+        "To encrypt smart contracts",
+        "To act as a consensus algorithm"
+      ],
+      "correctAnswer": 0,
+      "explanation": "IPFS (InterPlanetary File System) is a decentralized storage system for sharing and storing files."
+    },
+    {
+      "id": 11,
+      "question": "Stablecoins are cryptocurrencies designed to minimize price volatility.",
+      "type": "true-false",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Stablecoins are pegged to assets like USD or gold to reduce volatility compared to other cryptocurrencies."
+    },
+    {
+      "id": 12,
+      "question": "Which of these is an example of a stablecoin?",
+      "type": "multiple-choice",
+      "options": [
+        "ETH",
+        "USDC",
+        "MATIC",
+        "SOL"
+      ],
+      "correctAnswer": 1,
+      "explanation": "USDC is a stablecoin pegged to the US dollar."
+    },
+    {
+      "id": 13,
+      "question": "Gas fees on Ethereum fluctuate based on network demand.",
+      "type": "true-false",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Gas fees are higher when the network is congested and lower when demand is low."
+    },
+    {
+      "id": 14,
+      "question": "What is 'staking' in the context of blockchain?",
+      "type": "multiple-choice",
+      "options": [
+        "Mining using proof of work",
+        "Locking tokens to support network security and earn rewards",
+        "Sending tokens to an exchange",
+        "Buying NFTs"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Staking means locking tokens in a blockchain network to validate transactions and earn rewards."
+    },
+    {
+      "id": 15,
+      "question": "Web3 applications are often called DApps (Decentralized Applications).",
+      "type": "true-false",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correctAnswer": 0,
+      "explanation": "DApps are applications built on decentralized networks, not controlled by a single entity."
+    }
+  ]
+}

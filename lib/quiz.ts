@@ -33,7 +33,7 @@ export interface QuizResult {
 export async function loadQuizzes(): Promise<Quiz[]> {
   try {
     const baseUrl = process.env.NODE_ENV === 'production' 
-      ? process.env.RENDER_EXTERNAL_URL || 'https://your-app-name.onrender.com' 
+      ? process.env.RENDER_EXTERNAL_URL || 'https://cryptocrosslightversion-1.onrender.com' 
       : 'http://localhost:3000';
     const response = await fetch(`${baseUrl}/api/quizzes`);
     if (!response.ok) {
