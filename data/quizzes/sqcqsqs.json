@@ -1,0 +1,31 @@
+{
+  "id": "sqcqsqs",
+  "title": "sdQS",
+  "description": "Dsq",
+  "difficulty": "Beginner",
+  "duration": 10,
+  "passingScore": 60,
+  "creator": {
+    "id": "5af4ceef-e346-4a50-9f39-4c09aa06f8a5",
+    "name": "SABER",
+    "email": "saberchaabani@gmail.com",
+    "role": "professor"
+  },
+  "createdAt": "2025-09-09T13:43:40.131Z",
+  "type": "certificate",
+  "privacy": "private",
+  "status": "draft",
+  "questions": [
+    {
+      "id": 1,
+      "question": "qsd",
+      "type": "multiple-choice",
+      "options": [
+        "qsc",
+        "qsx"
+      ],
+      "correctAnswer": 1,
+      "explanation": "qs"
+    }
+  ]
+}

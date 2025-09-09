@@ -5,10 +5,12 @@ import { useParams, useRouter } from 'next/navigation';
 import ResultSummary from '../../../../components/ResultSummary';
 import Question from '../../../../components/Question';
 import { loadQuiz, QuizResult } from '../../../../lib/quiz';
+import { useAuth } from '../../../../components/AuthProvider';
 
 export default function ResultPage() {
   const params = useParams();
   const router = useRouter();
+  const { user } = useAuth();
   const [quiz, setQuiz] = useState<any>(null);
   const [result, setResult] = useState<QuizResult | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -29,17 +31,20 @@ export default function ResultPage() {
         }
         setQuiz(quizData);
 
-        // Load result from localStorage
-        const resultData = localStorage.getItem(`quiz-result-${params.id}`);
-        if (!resultData) {
-          setError('No quiz result found. Please complete the quiz first.');
+        // Load result from server for this user and quiz
+        if (!user?.email) {
+          setError('Please sign in to view your results.');
           return;
         }
-
-        const parsedResult = JSON.parse(resultData);
-        // Convert completedAt back to Date object
-        parsedResult.completedAt = new Date(parsedResult.completedAt);
-        setResult(parsedResult);
+        const res = await fetch(`/api/results?email=${encodeURIComponent(user.email)}&quizId=${encodeURIComponent(params.id as string)}`, { cache: 'no-store' });
+        const list = await res.json();
+        if (!Array.isArray(list) || list.length === 0) {
+          setError('No quiz result found.');
+          return;
+        }
+        const latest = list[list.length - 1];
+        latest.completedAt = new Date(latest.completedAt);
+        setResult(latest);
       } catch (err) {
         setError('Failed to load quiz results');
       } finally {

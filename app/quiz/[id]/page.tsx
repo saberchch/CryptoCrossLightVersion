@@ -1,13 +1,16 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import Question from '../../../components/Question';
 import { loadQuiz, calculateScore, Quiz, QuizResult } from '../../../lib/quiz';
+import { useAuth } from '../../../components/AuthProvider';
 
 export default function QuizPage() {
   const params = useParams();
   const router = useRouter();
+  const sp = useSearchParams();
+  const { user, addXp, replaceUser } = useAuth();
   const [quiz, setQuiz] = useState<Quiz | null>(null);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<{ questionId: number; selectedAnswer: number }[]>([]);
@@ -23,6 +26,13 @@ export default function QuizPage() {
           setError('Quiz not found');
           return;
         }
+        if (quizData.privacy === 'private') {
+          const sessionId = sp.get('session');
+          if (!sessionId) {
+            setError('This quiz is private. Join via a session code.');
+            return;
+          }
+        }
         setQuiz(quizData);
         setTimeLeft(quizData.duration * 60); // Convert minutes to seconds
       } catch (err) {
@@ -33,7 +43,7 @@ export default function QuizPage() {
     };
 
     fetchQuiz();
-  }, [params.id]);
+  }, [params.id, sp]);
 
   useEffect(() => {
     if (timeLeft > 0) {
@@ -70,14 +80,14 @@ export default function QuizPage() {
     }
   };
 
-  const handleSubmitQuiz = () => {
+  const handleSubmitQuiz = async () => {
     if (!quiz) return;
 
     const result = calculateScore(quiz, answers);
     const quizResult: QuizResult = {
       quizId: quiz.id,
-      studentName: 'Anonymous Student', // In MVP, we'll use anonymous
-      studentEmail: '',
+      studentName: user?.name || 'Anonymous Student',
+      studentEmail: user?.email || '',
       score: result.score,
       totalQuestions: result.totalQuestions,
       correctAnswers: result.correctAnswers,
@@ -86,9 +96,44 @@ export default function QuizPage() {
       answers
     };
 
-    // Store result in localStorage for now (MVP approach)
-    localStorage.setItem(`quiz-result-${quiz.id}`, JSON.stringify(quizResult));
+    // Persist result server-side for later access
+    try {
+      await fetch('/api/results', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(quizResult),
+      });
+    } catch {}
+
+    // Update JSON store; then replace local user with server state to avoid double append
+    if (user?.email) {
+      const historyEntry = { quizId: quiz.id, title: quiz.title, takenAt: new Date().toISOString(), score: result.score };
+      try {
+        await fetch('/api/users', {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: user.email, addXp: result.passed ? 50 : 20, addHistory: historyEntry })
+        }).then(async r => {
+          if (r.ok) {
+            const updated = await r.json();
+            replaceUser(updated);
+          }
+        });
+      } catch {}
+    }
     
+    // Record session result if in a session
+    const sessionId = sp.get('session');
+    if (sessionId && user?.email) {
+      try {
+        await fetch('/api/session-results', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ sessionId, quizId: quiz.id, studentName: user.name, studentEmail: user.email, score: result.score, passed: result.passed, completedAt: new Date().toISOString() })
+        });
+      } catch {}
+    }
+
     // Navigate to results page
     router.push(`/quiz/${quiz.id}/result`);
   };

@@ -1,0 +1,32 @@
+[
+  {
+    "id": "sess-1757425262902",
+    "code": "P2VBCG",
+    "quizId": "sqcqsqs",
+    "ownerId": "5af4ceef-e346-4a50-9f39-4c09aa06f8a5",
+    "status": "live",
+    "privacy": "private",
+    "createdAt": "2025-09-09T13:41:02.902Z",
+    "expiresAt": "2025-09-09T14:11:02.902Z"
+  },
+  {
+    "id": "sess-1757425266737",
+    "code": "WDG4T3",
+    "quizId": "sqcqsqs",
+    "ownerId": "5af4ceef-e346-4a50-9f39-4c09aa06f8a5",
+    "status": "live",
+    "privacy": "private",
+    "createdAt": "2025-09-09T13:41:06.737Z",
+    "expiresAt": "2025-09-09T14:11:06.737Z"
+  },
+  {
+    "id": "sess-1757425364024",
+    "code": "6PYFVS",
+    "quizId": "sqcqsqs",
+    "ownerId": "5af4ceef-e346-4a50-9f39-4c09aa06f8a5",
+    "status": "live",
+    "privacy": "private",
+    "createdAt": "2025-09-09T13:42:44.024Z",
+    "expiresAt": "2025-09-09T14:12:44.024Z"
+  }
+]

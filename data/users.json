@@ -1,0 +1,80 @@
+[
+  {
+    "id": "admin-1",
+    "name": "Admin",
+    "email": "admin@cryptocross.local",
+    "role": "admin",
+    "avatarUrl": "",
+    "xp": 0,
+    "history": []
+  },
+  {
+    "id": "e14c047f-bf88-4158-b902-f3d44f833bb1",
+    "name": "SABER",
+    "email": "saberchaabani94@gmail.com",
+    "role": "student",
+    "avatarUrl": "",
+    "xp": 220,
+    "history": [
+      {
+        "quizId": "bitcoin-basics",
+        "title": "Bitcoin Fundamentals",
+        "takenAt": "2025-09-08T16:36:13.932Z",
+        "score": 100
+      },
+      {
+        "quizId": "bitcoin-basics",
+        "title": "Bitcoin Fundamentals",
+        "takenAt": "2025-09-08T16:35:50.390Z",
+        "score": 20
+      }
+    ],
+    "passwordHash": "3d579affcf3d98f724ebcea39dc4049de885cd4006cd4b4dfaabc576308c45a3"
+  },
+  {
+    "id": "5af4ceef-e346-4a50-9f39-4c09aa06f8a5",
+    "name": "SABER",
+    "email": "saberchaabani@gmail.com",
+    "role": "professor",
+    "avatarUrl": "",
+    "xp": 50,
+    "history": [
+      {
+        "quizId": "sqcqsqs",
+        "title": "sdQS",
+        "takenAt": "2025-09-09T13:43:40.241Z",
+        "type": "created"
+      },
+      {
+        "quizId": "bn",
+        "title": "ghgh",
+        "takenAt": "2025-09-09T13:39:48.887Z",
+        "type": "created"
+      },
+      {
+        "quizId": "bkqsdhkq",
+        "title": "ggg",
+        "takenAt": "2025-09-08T17:05:43.914Z",
+        "score": 100
+      }
+    ],
+    "passwordHash": "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92"
+  },
+  {
+    "id": "1de226a9-7a02-47de-8376-e2b6f4e9f407",
+    "name": "SABER CHAABANI",
+    "email": "saber.chaabani@bitstack.institute",
+    "role": "student",
+    "avatarUrl": "",
+    "xp": 50,
+    "history": [
+      {
+        "quizId": "bkqsdhkq",
+        "title": "ggg",
+        "takenAt": "2025-09-09T13:44:23.431Z",
+        "score": 100
+      }
+    ],
+    "passwordHash": "c8748ba0f6927bff968aa1dbb17be70d693c979ceeccc44eda2664ef7cf4bb09"
+  }
+]

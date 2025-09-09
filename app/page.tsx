@@ -1,8 +1,17 @@
 import QuizCard from '../components/QuizCard';
 import { loadQuizzes } from '../lib/quiz';
+import Link from 'next/link';
+import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 
 export default async function HomePage() {
   const quizzes = await loadQuizzes();
+  const cookieStore = cookies();
+  const roleCookie = cookieStore.get('cc_role');
+  const isLoggedIn = !!roleCookie?.value;
+  if (roleCookie?.value === 'admin') {
+    redirect('/admin');
+  }
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -18,8 +27,12 @@ export default async function HomePage() {
 
       <div className="mb-8">
         <h2 className="text-2xl font-semibold text-gray-900 mb-6">Available Quizzes</h2>
-        
-        {quizzes.length === 0 ? (
+        {!isLoggedIn ? (
+          <div className="text-center py-12 border rounded-lg bg-white">
+            <p className="text-lg mb-4">Please log in to view and take quizzes.</p>
+            <Link href="/login" className="inline-block px-4 py-2 rounded-md bg-crypto-primary text-white">Login</Link>
+          </div>
+        ) : quizzes.length === 0 ? (
           <div className="text-center py-12">
             <div className="text-gray-500 mb-4">
               <svg className="w-16 h-16 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -1,0 +1,102 @@
+[
+  {
+    "id": "result-1757349350138",
+    "quizId": "bitcoin-basics",
+    "studentName": "SABER",
+    "studentEmail": "saberchaabani94@gmail.com",
+    "score": 20,
+    "totalQuestions": 5,
+    "correctAnswers": 1,
+    "passed": false,
+    "completedAt": "2025-09-08T16:35:50.364Z",
+    "answers": [
+      {
+        "questionId": 1,
+        "selectedAnswer": 1
+      },
+      {
+        "questionId": 2,
+        "selectedAnswer": 2
+      },
+      {
+        "questionId": 3,
+        "selectedAnswer": 2
+      },
+      {
+        "questionId": 4,
+        "selectedAnswer": 3
+      },
+      {
+        "questionId": 5,
+        "selectedAnswer": 1
+      }
+    ]
+  },
+  {
+    "id": "result-1757349373424",
+    "quizId": "bitcoin-basics",
+    "studentName": "SABER",
+    "studentEmail": "saberchaabani94@gmail.com",
+    "score": 100,
+    "totalQuestions": 5,
+    "correctAnswers": 5,
+    "passed": true,
+    "completedAt": "2025-09-08T16:36:13.905Z",
+    "answers": [
+      {
+        "questionId": 1,
+        "selectedAnswer": 1
+      },
+      {
+        "questionId": 2,
+        "selectedAnswer": 1
+      },
+      {
+        "questionId": 3,
+        "selectedAnswer": 1
+      },
+      {
+        "questionId": 4,
+        "selectedAnswer": 1
+      },
+      {
+        "questionId": 5,
+        "selectedAnswer": 0
+      }
+    ]
+  },
+  {
+    "id": "result-1757351144044",
+    "quizId": "bkqsdhkq",
+    "studentName": "SABER",
+    "studentEmail": "saberchaabani@gmail.com",
+    "score": 100,
+    "totalQuestions": 1,
+    "correctAnswers": 1,
+    "passed": true,
+    "completedAt": "2025-09-08T17:05:43.750Z",
+    "answers": [
+      {
+        "questionId": 1,
+        "selectedAnswer": 0
+      }
+    ]
+  },
+  {
+    "id": "result-1757425463409",
+    "quizId": "bkqsdhkq",
+    "studentName": "SABER CHAABANI",
+    "studentEmail": "saber.chaabani@bitstack.institute",
+    "score": 100,
+    "totalQuestions": 1,
+    "correctAnswers": 1,
+    "passed": true,
+    "completedAt": "2025-09-09T13:44:23.344Z",
+    "answers": [
+      {
+        "questionId": 1,
+        "selectedAnswer": 0
+      }
+    ]
+  }
+]

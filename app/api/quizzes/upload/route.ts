@@ -6,6 +6,10 @@ export async function POST(request: Request) {
   try {
     const formData = await request.formData();
     const file = formData.get('quizFile') as File;
+    const creatorId = formData.get('creatorId') as string | null;
+    const creatorName = formData.get('creatorName') as string | null;
+    const creatorEmail = formData.get('creatorEmail') as string | null;
+    const creatorRole = formData.get('creatorRole') as string | null;
     
     if (!file) {
       return NextResponse.json(
@@ -78,6 +82,17 @@ export async function POST(request: Request) {
       );
     }
     
+    // Attach creator metadata
+    if (creatorId) {
+      quizData.creator = {
+        id: creatorId,
+        name: creatorName,
+        email: creatorEmail,
+        role: creatorRole,
+      };
+    }
+    quizData.createdAt = quizData.createdAt || new Date().toISOString();
+
     // Write quiz to file
     fs.writeFileSync(filePath, JSON.stringify(quizData, null, 2));
     

@@ -13,7 +13,7 @@ export async function GET() {
     
     // Read all JSON files in the quizzes directory
     const files = fs.readdirSync(quizzesDir).filter(file => file.endsWith('.json'));
-    const quizzes = [];
+    const quizzes = [] as any[];
     
     for (const file of files) {
       try {
@@ -27,7 +27,9 @@ export async function GET() {
       }
     }
     
-    return NextResponse.json(quizzes);
+    // Hide draft/private quizzes from general listing
+    const filtered = quizzes.filter((q: any) => q.status !== 'draft' && q.privacy !== 'private');
+    return NextResponse.json(filtered);
   } catch (error) {
     console.error('Error reading quizzes:', error);
     return NextResponse.json(
@@ -84,6 +86,17 @@ export async function POST(request: Request) {
       );
     }
     
+    // Attach creator metadata if missing
+    if (!newQuiz.creator && request.headers.get('x-creator-id')) {
+      newQuiz.creator = {
+        id: request.headers.get('x-creator-id'),
+        name: request.headers.get('x-creator-name'),
+        email: request.headers.get('x-creator-email'),
+        role: request.headers.get('x-creator-role'),
+      };
+      newQuiz.createdAt = newQuiz.createdAt || new Date().toISOString();
+    }
+
     // Write quiz to individual file
     fs.writeFileSync(filePath, JSON.stringify(newQuiz, null, 2));
     
