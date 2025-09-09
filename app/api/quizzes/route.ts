@@ -96,7 +96,7 @@ export async function POST(request: Request) {
     }
     
     // Build/provide an id if missing - professional, collision-safe slug
-    function slugify(input: string) {
+    const slugify = (input: string) => {
       return String(input)
         .toLowerCase()
         .normalize('NFKD')
@@ -105,12 +105,12 @@ export async function POST(request: Request) {
         .replace(/^-+|-+$/g, '')
         .replace(/-{2,}/g, '-')
         .slice(0, 60);
-    }
-    function shortStamp() {
+    };
+    const shortStamp = () => {
       const t = Date.now().toString(36);
       const r = Math.random().toString(36).slice(2, 6);
       return `${t}-${r}`;
-    }
+    };
     let quizId = newQuiz.id && typeof newQuiz.id === 'string' && newQuiz.id.trim().length > 0
       ? slugify(newQuiz.id)
       : `${slugify(newQuiz.title)}-${shortStamp()}`;
