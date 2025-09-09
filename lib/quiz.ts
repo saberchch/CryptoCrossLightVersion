@@ -15,6 +15,16 @@ export interface Quiz {
   duration: number; // in minutes
   passingScore: number; // percentage
   questions: Question[];
+  privacy?: 'public' | 'private';
+  status?: 'draft' | 'published';
+  type?: 'certificate' | 'exam' | 'quick-test' | 'vote';
+  creator?: {
+    id: string;
+    name: string;
+    email: string;
+    role: string;
+  };
+  createdAt?: string;
 }
 
 export interface QuizResult {
