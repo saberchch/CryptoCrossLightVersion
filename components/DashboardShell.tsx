@@ -19,13 +19,13 @@ export default function DashboardShell({ title, children }: DashboardShellProps)
   const navItems = useMemo(() => {
     const base = [
       { href: '/dashboard', label: 'Dashboard' },
-      { href: '/', label: 'Quizzes' },
+      { href: '/dashboard#quizzes', label: 'Quizzes' },
       { href: '/dashboard#certificates', label: 'Certificates' },
       { href: '/dashboard#wallet', label: 'Wallet' },
       { href: '/dashboard#leaderboard', label: 'Leaderboards' },
       { href: '/dashboard#analytics', label: 'Analytics' },
     ];
-    if (user?.role === 'professor') base.splice(2, 0, { href: '/creator', label: 'Creator' });
+    if (user?.role === 'professor') base.splice(2, 0, { href: '/dashboard#creator', label: 'Creator' });
     if (user?.role === 'admin') base.push({ href: '/admin', label: 'Admin' });
     return base;
   }, [user?.role]);
@@ -75,7 +75,7 @@ export default function DashboardShell({ title, children }: DashboardShellProps)
             </div>
             <div className="hidden md:flex items-center gap-3">
               {user?.role === 'professor' && (
-                <Link href="/creator" className="btn-primary text-sm">Create Quiz</Link>
+                <Link href="/dashboard#creator" className="btn-primary text-sm">Create Quiz</Link>
               )}
               {!user ? (
                 <Link href="/login" className="btn-secondary text-sm">Login</Link>

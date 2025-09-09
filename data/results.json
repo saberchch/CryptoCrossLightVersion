@@ -98,5 +98,38 @@
         "selectedAnswer": 0
       }
     ]
+  },
+  {
+    "id": "result-1757431069184",
+    "quizId": "bitcoin-basics",
+    "studentName": "SABER",
+    "studentEmail": "saberchaabani@gmail.com",
+    "score": 100,
+    "totalQuestions": 5,
+    "correctAnswers": 5,
+    "passed": true,
+    "completedAt": "2025-09-09T15:17:49.401Z",
+    "answers": [
+      {
+        "questionId": 1,
+        "selectedAnswer": 1
+      },
+      {
+        "questionId": 2,
+        "selectedAnswer": 1
+      },
+      {
+        "questionId": 3,
+        "selectedAnswer": 1
+      },
+      {
+        "questionId": 4,
+        "selectedAnswer": 1
+      },
+      {
+        "questionId": 5,
+        "selectedAnswer": 0
+      }
+    ]
   }
 ]

@@ -35,7 +35,7 @@ export async function loadQuizzes(): Promise<Quiz[]> {
     const baseUrl = process.env.NODE_ENV === 'production' 
       ? process.env.RENDER_EXTERNAL_URL || 'https://cryptocrosslightversion-1.onrender.com' 
       : 'http://localhost:3000';
-    const response = await fetch(`${baseUrl}/api/quizzes`, { cache: 'no-store', next: { revalidate: 0 } });
+    const response = await fetch(`${baseUrl}/api/quizzes`, { cache: 'no-store' });
     if (!response.ok) {
       throw new Error('Failed to fetch quizzes');
     }

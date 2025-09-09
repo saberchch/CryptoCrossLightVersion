@@ -42,7 +42,7 @@ export default function LoginPage() {
       }
       const userObj = await res.json();
       login(userObj);
-      router.push(userObj.role === 'admin' ? '/admin' : next);
+      router.push(userObj.role === 'admin' ? '/admin' : '/dashboard');
       return;
     }
     // Create profile; admin is blocked by API
@@ -58,7 +58,7 @@ export default function LoginPage() {
     }
     const created = await createRes.json();
     login(created);
-    router.push(next);
+    router.push(created.role === 'admin' ? '/admin' : '/dashboard');
   }
 
   return (

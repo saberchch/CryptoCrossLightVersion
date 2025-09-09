@@ -37,8 +37,14 @@
     "email": "saberchaabani@gmail.com",
     "role": "professor",
     "avatarUrl": "",
-    "xp": 50,
+    "xp": 100,
     "history": [
+      {
+        "quizId": "bitcoin-basics",
+        "title": "Bitcoin Fundamentals",
+        "takenAt": "2025-09-09T15:17:49.433Z",
+        "score": 100
+      },
       {
         "quizId": "sqcqsqs",
         "title": "sdQS",
