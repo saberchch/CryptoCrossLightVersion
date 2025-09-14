@@ -3,18 +3,26 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useAuth } from '../../components/AuthProvider';
 import Link from 'next/link';
-import DashboardShell from '../../components/DashboardShell';
 import CreatorPanel from '../../components/CreatorPanel';
 import QuizzesPanel from '../../components/QuizzesPanel';
+import RoleDashboard from '../../components/dashboard/RoleDashboard';
 import { usePathname, useSearchParams } from 'next/navigation';
+import PeoplePanel from '../../components/dashboard/moderator/PeoplePanel';
+import DashboardLayout from '../../components/dashboard/DashboardLayout';
 
 export default function DashboardPage() {
-  const { user } = useAuth();
+  const { user, replaceUser } = useAuth() as any;
   const [results, setResults] = useState<any[]>([]);
   const [activityFilter, setActivityFilter] = useState<'all' | 'created' | 'completed' | 'passed' | 'failed'>('all');
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [activeSection, setActiveSection] = useState<string>('');
+  const [showChangePassword, setShowChangePassword] = useState<boolean>(false);
+  const [newPassword, setNewPassword] = useState<string>('');
+  const [confirmPassword, setConfirmPassword] = useState<string>('');
+  const [isSubmittingChange, setIsSubmittingChange] = useState<boolean>(false);
+  const [changeError, setChangeError] = useState<string | null>(null);
+  const [changeSuccess, setChangeSuccess] = useState<string | null>(null);
 
   // Toggle creator by hash (#creator)
   useEffect(() => {
@@ -28,6 +36,14 @@ export default function DashboardPage() {
       return () => window.removeEventListener('hashchange', checkHash);
     }
   }, [pathname, searchParams]);
+  useEffect(() => {
+    const cp = searchParams.get('changePassword');
+    if (cp === '1') setShowChangePassword(true);
+    // Enforce if user is pending or never updated password
+    if (user && (String((user as any).status||'').toLowerCase() === 'pending' || !(user as any).passwordUpdatedAt)) {
+      setShowChangePassword(true);
+    }
+  }, [searchParams, user]);
   useEffect(() => {
     const load = async () => {
       if (!user?.email) return;
@@ -74,92 +90,91 @@ export default function DashboardPage() {
 
   if (!user) {
     return (
-      <DashboardShell title="Dashboard">
-        <div className="max-w-3xl mx-auto">
-          <div className="bg-white rounded-lg shadow p-6 text-center">
-            <p className="mb-4">Please log in to view your dashboard.</p>
-            <Link href="/login" className="px-4 py-2 rounded-md bg-crypto-primary text-white">Login</Link>
+      <DashboardLayout user={user}>
+        <div className="flex items-center justify-center min-h-screen">
+          <div className="text-center">
+            <h1 className="text-2xl font-bold text-white mb-4">Please log in to view your dashboard.</h1>
+            <Link href="/login" className="btn-primary">Login</Link>
           </div>
         </div>
-      </DashboardShell>
+      </DashboardLayout>
     );
   }
 
   return (
-    <DashboardShell title="Dashboard">
-      <div className="max-w-6xl mx-auto space-y-6">
-      {!activeSection && (
-        <div className="bg-white rounded-lg shadow p-6 flex items-center space-x-4">
-          <div className="w-16 h-16 rounded-full bg-gray-200 overflow-hidden flex items-center justify-center text-xl">
-            {user.avatarUrl ? (<img src={user.avatarUrl} alt={user.name} className="w-full h-full object-cover" />) : (user.name[0])}
+    <DashboardLayout 
+      user={user}
+      activeSidebarItem="quizzes"
+      walletBalance="$1,234.56"
+      subscriptionName="CryptoCross Pro"
+      subscriptionPlan="Premium Plan"
+    >
+      {showChangePassword && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center">
+            <div className="absolute inset-0 bg-black/40" />
+            <div className="relative bg-white rounded-lg shadow-xl border border-yellow-200 w-full max-w-md mx-4 p-6">
+              <h2 className="text-lg font-semibold mb-2">Set a new password</h2>
+              <p className="text-sm text-gray-600 mb-4">For security, you must change your temporary password before continuing.</p>
+              {changeError && <div className="p-2 mb-3 bg-red-50 text-red-700 border border-red-200 rounded text-sm">{changeError}</div>}
+              <form
+                onSubmit={async (e) => {
+                  e.preventDefault();
+                  setChangeError(null);
+                  setChangeSuccess(null);
+                  if (newPassword !== confirmPassword) {
+                    setChangeError('Passwords do not match');
+                    return;
+                  }
+                  setIsSubmittingChange(true);
+                  try {
+                    const res = await fetch('/api/change-password', {
+                      method: 'POST', headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({ email: user?.email, newPassword })
+                    });
+                    if (!res.ok) {
+                      const err = await res.json().catch(() => ({}));
+                      setChangeError(err.error || 'Failed to change password');
+                      setIsSubmittingChange(false);
+                      return;
+                    }
+                    const updated = await res.json();
+                    try { replaceUser && replaceUser(updated); } catch {}
+                    setChangeSuccess('Password updated.');
+                    setShowChangePassword(false);
+                    setIsSubmittingChange(false);
+                    if (typeof window !== 'undefined') {
+                      const url = new URL(window.location.href);
+                      url.searchParams.delete('changePassword');
+                      window.history.replaceState(null, '', url.toString());
+                    }
+                  } catch {
+                    setChangeError('Failed to change password');
+                    setIsSubmittingChange(false);
+                  }
+                }}
+                className="space-y-3"
+              >
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">New password</label>
+                  <input type="password" className="border rounded px-3 py-2 w-full" placeholder="Enter new password"
+                    value={newPassword} onChange={(e) => setNewPassword(e.target.value)} required minLength={6} />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">{user.name}</h1>
-            <p className="text-gray-600">{user.email} · {user.role}</p>
-          </div>
-          <div className="ml-auto text-right">
-            <div className="text-crypto-primary font-semibold">XP: {user.xp}</div>
-          </div>
-        </div>
-      )}
-
-        {!activeSection && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="bg-white rounded-lg shadow p-6">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-semibold">Recent Activity</h2>
-                <div className="text-sm flex items-center gap-2">
-                  <span className="text-gray-600">Filter:</span>
-                  <select className="border rounded px-2 py-1" value={activityFilter} onChange={e => setActivityFilter(e.target.value as any)}>
-                    <option value="all">All</option>
-                    <option value="created">Created</option>
-                    <option value="completed">Completed</option>
-                    <option value="passed">Passed</option>
-                    <option value="failed">Failed</option>
-                  </select>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Confirm new password</label>
+                  <input type="password" className="border rounded px-3 py-2 w-full" placeholder="Re-enter new password"
+                    value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required minLength={6} />
                 </div>
-              </div>
-              {results.length === 0 ? (
-                <p className="text-gray-600">No activity yet. Create or complete a quiz to see history.</p>
-              ) : (
-                <ul className="divide-y divide-gray-100">
-                  {results
-                    .filter(r => {
-                      if (activityFilter === 'all') return true;
-                      if (activityFilter === 'created') return r.type === 'created';
-                      if (activityFilter === 'completed') return r.type !== 'created';
-                      if (activityFilter === 'passed') return r.passed === true;
-                      if (activityFilter === 'failed') return r.passed === false;
-                      return true;
-                    })
-                    .map((r, i) => (
-                    <li key={i} className="py-3 flex items-center justify-between">
-                      <div>
-                        <div className="font-medium">{r.quizId}</div>
-                        <div className="text-xs uppercase tracking-wide text-gray-400">{r.type === 'created' ? 'Created' : (r.passed === true ? 'Completed · Passed' : r.passed === false ? 'Completed · Failed' : 'Completed')}</div>
-                        <div className="text-sm text-gray-500">{new Date(r.completedAt || r.takenAt).toLocaleString()}</div>
-                      </div>
-                      <div className="flex items-center space-x-3">
-                        {r.type !== 'created' && (
-                          <>
-                            <div className="text-sm">Score: {r.score}%</div>
-                            <Link href={`/quiz/${r.quizId}/result`} className="text-crypto-primary underline text-sm">View</Link>
-                          </>
-                        )}
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-            <div className="bg-white rounded-lg shadow p-6" id="wallet">
-              <h2 className="text-lg font-semibold mb-4">Wallet</h2>
-              <p className="text-gray-600">Coming soon.</p>
+                <button type="submit" disabled={isSubmittingChange || newPassword.length < 6 || newPassword !== confirmPassword}
+                  className={`w-full ${isSubmittingChange || newPassword.length < 6 || newPassword !== confirmPassword ? 'bg-gray-300 cursor-not-allowed' : 'bg-crypto-primary hover:opacity-90'} text-white font-semibold py-2 rounded-md`}>
+                  {isSubmittingChange ? 'Saving…' : 'Save password'}
+                </button>
+              </form>
             </div>
           </div>
         )}
+        {!activeSection && (<RoleDashboard />)}
 
-        {user.role === 'professor' && activeSection === '#creator' && (
+        {(user.role === 'educator' || user.role === 'admin' || user.role === 'moderator') && activeSection === '#creator' && (
           <div className="bg-white rounded-lg shadow p-6" id="creator">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold">Creator Tools</h2>
@@ -182,6 +197,19 @@ export default function DashboardPage() {
               >Close</button>
             </div>
             <QuizzesPanel />
+          </div>
+        )}
+
+        {activeSection === '#people' && (
+          <div className="bg-white rounded-lg shadow p-6" id="people">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-semibold">People</h2>
+              <button
+                onClick={() => { if (typeof window !== 'undefined') { history.replaceState(null, '', '/dashboard'); setActiveSection(''); } }}
+                className="px-3 py-1.5 rounded-md border border-gray-300 text-sm hover:bg-gray-50"
+              >Close</button>
+            </div>
+            <PeoplePanel />
           </div>
         )}
 
@@ -236,8 +264,7 @@ export default function DashboardPage() {
             <p className="text-gray-600">Coming soon.</p>
           </div>
         )}
-      </div>
-    </DashboardShell>
+    </DashboardLayout>
   );
 }
 

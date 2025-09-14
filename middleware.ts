@@ -4,17 +4,21 @@ import type { NextRequest } from 'next/server';
 // Simple role-based route protection demo using a query param redirect to login
 // In real apps, use secure cookies/JWT. Here we only gate client routes by path.
 
-const protectedByRole: { pathStartsWith: string; roles: Array<'admin' | 'professor' | 'organization' | 'student'> }[] = [
+const protectedByRole: { pathStartsWith: string; roles: Array<'admin' | 'educator' | 'moderator' | 'learner'> }[] = [
   { pathStartsWith: '/admin', roles: ['admin'] },
-  { pathStartsWith: '/creator', roles: ['professor'] },
-  { pathStartsWith: '/org', roles: ['organization'] },
+  { pathStartsWith: '/creator', roles: ['educator', 'moderator', 'admin'] },
+  { pathStartsWith: '/org', roles: ['admin', 'moderator'] },
 ];
 
 export function middleware(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
 
   // Read role from cookie mirrored by AuthProvider
-  const role = request.cookies.get('cc_role')?.value;
+  let role = request.cookies.get('cc_role')?.value as any;
+  // Normalize legacy cookie roles gracefully for existing sessions
+  if (role === 'student') role = 'learner';
+  if (role === 'professor') role = 'educator';
+  if (role === 'organization') role = undefined; // force re-login for org role
 
   // Redirect logged-in users to dashboard when visiting landing or login
   if (pathname === '/' || pathname === '/login') {
@@ -34,7 +38,7 @@ export function middleware(request: NextRequest) {
     // allow through
   }
 
-  // Allow /creator for professors; anon users will be redirected by role-gate below
+  // Allow /creator for educators; anon users will be redirected by role-gate below
 
   // Role-based gated areas (admin/creator/org)
   const match = protectedByRole.find(rule => pathname.startsWith(rule.pathStartsWith));

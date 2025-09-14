@@ -60,7 +60,8 @@ export async function POST(request: Request) {
     }
     // Do not return passwordHash to client
     const { passwordHash, ...safeUser } = user;
-    return NextResponse.json(safeUser);
+    const mustChangePassword = !!user.forcePasswordChange;
+    return NextResponse.json({ ...safeUser, mustChangePassword });
   } catch (e) {
     return NextResponse.json({ error: 'Login failed' }, { status: 500 });
   }

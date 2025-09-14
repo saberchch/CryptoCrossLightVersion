@@ -1,0 +1,33 @@
+{
+  "base": {
+    "avatarUrl": "",
+    "xp": 0,
+    "history": [],
+    "status": "active",
+    "emailVerified": false,
+    "createdAt": null,
+    "updatedAt": null,
+    "lastLoginAt": null
+  },
+  "roles": {
+    "learner": {
+      "role": "learner",
+      "gradeLevel": null,
+      "interests": [],
+      "badges": []
+    },
+    "educator": {
+      "role": "educator",
+      "title": null,
+      "department": null,
+      "bio": ""
+    },
+    "moderator": {
+      "role": "moderator",
+      "scope": "global"
+    },
+    "admin": {
+      "role": "admin"
+    }
+  }
+}

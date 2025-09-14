@@ -3,6 +3,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { useAuth } from './AuthProvider';
+import Card from './ui/Card';
 
 interface QuizSummary {
   id: string;
@@ -18,7 +19,7 @@ interface QuizSummary {
   status?: 'draft' | 'published';
 }
 
-export default function QuizzesPanel() {
+export default function QuizzesPanel({ orgId }: { orgId?: string }) {
   const { user } = useAuth();
   const [quizzes, setQuizzes] = useState<QuizSummary[]>([]);
   const [loading, setLoading] = useState(true);
@@ -37,6 +38,7 @@ export default function QuizzesPanel() {
           headers: {
             ...(user?.id ? { 'x-user-id': user.id } : {}),
             ...(user?.role ? { 'x-user-role': user.role } : {}),
+            ...(orgId ? { 'x-org-id': orgId } : {}),
           }
         });
         if (!res.ok) {
@@ -53,7 +55,7 @@ export default function QuizzesPanel() {
     }
     load();
     return () => { mounted = false; };
-  }, [user?.id, user?.role]);
+  }, [user?.id, user?.role, orgId]);
 
   const visible = useMemo(() => {
     return quizzes.filter(q => {
@@ -78,20 +80,20 @@ export default function QuizzesPanel() {
             onChange={e => setFilter(e.target.value as any)}
           >
             <option value="all">All</option>
-            {user?.role === 'professor' && <option value="mine">My quizzes</option>}
+            {user?.role === 'educator' && <option value="mine">My quizzes</option>}
             <option value="public">Public</option>
             <option value="private">Private</option>
-            {user?.role === 'professor' && <option value="drafts">Drafts</option>}
+            {user?.role === 'educator' && <option value="drafts">Drafts</option>}
             <option value="published">Published</option>
           </select>
         </div>
-        {user?.role === 'professor' && (
+        {user?.role === 'educator' && (
           <Link href="/dashboard#creator" className="btn-primary text-sm">Create New</Link>
         )}
       </div>
 
       {loading && (
-        <div className="p-4 bg-white rounded shadow">Loading quizzes…</div>
+        <div className="card">Loading quizzes…</div>
       )}
       {error && (
         <div className="p-4 bg-red-50 text-red-700 border border-red-200 rounded">{error}</div>
@@ -99,20 +101,64 @@ export default function QuizzesPanel() {
       {!loading && !error && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {visible.length === 0 && (
-            <div className="col-span-full p-6 bg-white rounded shadow text-gray-600">No quizzes found.</div>
+            <div className="col-span-full card text-gray-600">No quizzes found.</div>
           )}
           {visible.map(q => (
-            <div key={q.id} className="bg-white rounded shadow p-4">
-              <div className="flex items-start justify-between">
-                <div>
-                  <div className="text-lg font-semibold">{q.title}</div>
-                  {q.description && <div className="text-sm text-gray-600 line-clamp-2">{q.description}</div>}
+            <Card
+              key={q.id}
+              className="hover:-translate-y-0.5"
+              header={(
+                <>
+                  <div className="text-lg font-semibold text-gray-900">{q.title}</div>
+                  <div className="text-xs text-gray-500 text-right">
+                    <div className="capitalize">{q.difficulty || ''}</div>
+                    <div>{q.duration ? `${q.duration} min` : ''}</div>
+                  </div>
+                </>
+              )}
+              footer={(
+                <div className="flex items-center gap-3">
+                  <Link href={`/quiz/${q.id}`} className="btn-primary text-sm">Open</Link>
+                  {(user?.role === 'admin' || (user?.role === 'educator' && q.creator?.id === user.id)) && (
+                    <>
+                      <button
+                        onClick={async () => {
+                          setBusyId(q.id);
+                          try {
+                            await fetch(`/api/quizzes/${encodeURIComponent(q.id)}`, {
+                              method: 'PATCH',
+                              headers: { 'Content-Type': 'application/json', ...(user?.id ? { 'x-user-id': user.id } : {}), ...(user?.role ? { 'x-user-role': user.role } : {}), ...(orgId ? { 'x-org-id': orgId } : {}) },
+                              body: JSON.stringify({ status: q.status === 'draft' ? 'published' : 'draft' })
+                            });
+                            const res = await fetch('/api/quizzes', { cache: 'no-store', headers: { ...(user?.id ? { 'x-user-id': user.id } : {}), ...(user?.role ? { 'x-user-role': user.role } : {}), ...(orgId ? { 'x-org-id': orgId } : {}) } });
+                            const data = await res.json();
+                            setQuizzes(Array.isArray(data) ? data : []);
+                          } finally { setBusyId(null); }
+                        }}
+                        className="text-sm px-3 py-1 rounded border gold-border hover:bg-amber-50"
+                        disabled={busyId === q.id}
+                      >{q.status === 'draft' ? 'Publish' : 'Unpublish'}</button>
+                      <button
+                        onClick={async () => {
+                          if (!confirm('Delete this quiz?')) return;
+                          setBusyId(q.id);
+                          try {
+                            await fetch(`/api/quizzes/${encodeURIComponent(q.id)}`, {
+                              method: 'DELETE',
+                              headers: { ...(user?.id ? { 'x-user-id': user.id } : {}), ...(user?.role ? { 'x-user-role': user.role } : {}), ...(orgId ? { 'x-org-id': orgId } : {}) }
+                            });
+                            setQuizzes(prev => prev.filter(x => x.id !== q.id));
+                          } finally { setBusyId(null); }
+                        }}
+                        className="text-sm px-3 py-1 rounded border border-red-300 text-red-700 hover:bg-red-50"
+                        disabled={busyId === q.id}
+                      >Delete</button>
+                    </>
+                  )}
                 </div>
-                <div className="text-xs text-gray-500 text-right">
-                  <div className="capitalize">{q.difficulty || ''}</div>
-                  <div>{q.duration ? `${q.duration} min` : ''}</div>
-                </div>
-              </div>
+              )}
+            >
+              {q.description && <div className="text-sm text-gray-700 line-clamp-2">{q.description}</div>}
               <div className="mt-2 flex items-center gap-2 text-xs">
                 {q.status && (
                   <span className={`px-2 py-0.5 rounded border ${q.status==='published'?'border-green-300 text-green-700 bg-green-50':'border-gray-300 text-gray-700 bg-gray-50'}`}>{q.status}</span>
@@ -124,47 +170,7 @@ export default function QuizzesPanel() {
                   <span className="px-2 py-0.5 rounded border border-gray-300 text-gray-700 bg-gray-50">{q.type}</span>
                 )}
               </div>
-              <div className="mt-3 flex items-center gap-3">
-                <Link href={`/quiz/${q.id}`} className="btn-secondary text-sm">Open</Link>
-                {(user?.role === 'admin' || (user?.role === 'professor' && q.creator?.id === user.id)) && (
-                  <>
-                    <button
-                      onClick={async () => {
-                        setBusyId(q.id);
-                        try {
-                          await fetch(`/api/quizzes/${encodeURIComponent(q.id)}`, {
-                            method: 'PATCH',
-                            headers: { 'Content-Type': 'application/json', ...(user?.id ? { 'x-user-id': user.id } : {}), ...(user?.role ? { 'x-user-role': user.role } : {}) },
-                            body: JSON.stringify({ status: q.status === 'draft' ? 'published' : 'draft' })
-                          });
-                          // reload
-                          const res = await fetch('/api/quizzes', { cache: 'no-store', headers: { ...(user?.id ? { 'x-user-id': user.id } : {}), ...(user?.role ? { 'x-user-role': user.role } : {}) } });
-                          const data = await res.json();
-                          setQuizzes(Array.isArray(data) ? data : []);
-                        } finally { setBusyId(null); }
-                      }}
-                      className="text-sm px-3 py-1 rounded border border-gray-300 hover:bg-gray-50"
-                      disabled={busyId === q.id}
-                    >{q.status === 'draft' ? 'Publish' : 'Unpublish'}</button>
-                    <button
-                      onClick={async () => {
-                        if (!confirm('Delete this quiz?')) return;
-                        setBusyId(q.id);
-                        try {
-                          await fetch(`/api/quizzes/${encodeURIComponent(q.id)}`, {
-                            method: 'DELETE',
-                            headers: { ...(user?.id ? { 'x-user-id': user.id } : {}), ...(user?.role ? { 'x-user-role': user.role } : {}) }
-                          });
-                          setQuizzes(prev => prev.filter(x => x.id !== q.id));
-                        } finally { setBusyId(null); }
-                      }}
-                      className="text-sm px-3 py-1 rounded border border-red-300 text-red-700 hover:bg-red-50"
-                      disabled={busyId === q.id}
-                    >Delete</button>
-                  </>
-                )}
-              </div>
-            </div>
+            </Card>
           ))}
         </div>
       )}

@@ -15,8 +15,8 @@ export async function POST() {
       return NextResponse.json({ updated: 0, note: 'No quizzes directory' });
     }
     const users = readUsersSafe();
-    const defaultCreator = users.find(u => u.role === 'professor') || users.find(u => u.role === 'admin') || {
-      id: 'system-migration', name: 'Imported', email: '', role: 'professor'
+    const defaultCreator = users.find(u => u.role === 'educator') || users.find(u => u.role === 'admin') || {
+      id: 'system-migration', name: 'Imported', email: '', role: 'educator'
     };
 
     const files = fs.readdirSync(quizzesDir).filter(f => f.endsWith('.json'));

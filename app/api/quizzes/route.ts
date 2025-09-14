@@ -1,167 +1,81 @@
 import { NextResponse } from 'next/server';
-import fs from 'fs';
+import { promises as fs } from 'fs';
 import path from 'path';
 
+const quizzesDir = path.join(process.cwd(), 'data', 'quizzes');
+const usersPath = path.join(process.cwd(), 'data', 'users.json');
+const membersPath = path.join(process.cwd(), 'data', 'user_organizations.json');
+
+async function readJson(p: string, fallback: any) { try { const raw = await fs.readFile(p, 'utf-8'); return JSON.parse(raw); } catch { return fallback; } }
+
+function isMemberOfOrg(members: any[], userId: string, orgId: string) {
+  return members.some(m => m.organizationId === orgId && m.userId === userId);
+}
+
 export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const orgId = searchParams.get('orgId') || undefined;
+  const type = searchParams.get('type') || undefined;
+  const status = searchParams.get('status') || undefined;
+
+  const members = await readJson(membersPath, []);
+
   try {
-    const quizzesDir = path.join(process.cwd(), 'data', 'quizzes');
-    
-    // Check if quizzes directory exists
-    if (!fs.existsSync(quizzesDir)) {
-      return NextResponse.json([]);
-    }
-    
-    // Read all JSON files in the quizzes directory
-    const files = fs.readdirSync(quizzesDir).filter(file => file.endsWith('.json'));
-    const quizzes = [] as any[];
-    
-    for (const file of files) {
+    await fs.mkdir(quizzesDir, { recursive: true });
+    const files = await fs.readdir(quizzesDir);
+    const list: any[] = [];
+    for (const f of files) {
+      if (!f.endsWith('.json')) continue;
       try {
-        const filePath = path.join(quizzesDir, file);
-        const fileContents = fs.readFileSync(filePath, 'utf8');
-        const quiz = JSON.parse(fileContents);
-        quizzes.push(quiz);
-      } catch (fileError) {
-        console.error(`Error reading quiz file ${file}:`, fileError);
-        // Continue with other files even if one fails
-      }
+        const q = JSON.parse(await fs.readFile(path.join(quizzesDir, f), 'utf-8'));
+        if (orgId) {
+          const creatorId = q.creator?.id;
+          if (!creatorId || !isMemberOfOrg(members, creatorId, orgId)) continue;
+        }
+        if (type && String(q.type || '').toLowerCase() !== type.toLowerCase()) continue;
+        if (status && String(q.status || '').toLowerCase() !== status.toLowerCase()) continue;
+        list.push({ id: q.id, title: q.title, description: q.description, difficulty: q.difficulty, duration: q.duration, passingScore: q.passingScore, creator: q.creator, createdAt: q.createdAt, type: q.type, privacy: q.privacy, status: q.status });
+      } catch {}
     }
-    
-    // Read requester from headers (set by client after login)
-    const requesterId = request.headers.get('x-user-id');
-    const requesterRole = request.headers.get('x-user-role');
-
-    // Visibility rules:
-    // - Anonymous or student: only published & public
-    // - Professor: include own quizzes (any status/privacy) + published & public from others
-    // - Admin: see all
-    const filtered = quizzes.filter((q: any) => {
-      const isOwner = requesterId && q.creator && q.creator.id === requesterId;
-      const isPublishedPublic = q.status !== 'draft' && q.privacy !== 'private';
-
-      if (requesterRole === 'admin') {
-        return true;
-      }
-      if (requesterRole === 'professor') {
-        return isOwner || isPublishedPublic;
-      }
-      // default: student or anonymous
-      return isPublishedPublic;
-    });
-    return NextResponse.json(filtered);
-  } catch (error) {
-    console.error('Error reading quizzes:', error);
-    return NextResponse.json(
-      { error: 'Failed to load quizzes' },
-      { status: 500 }
-    );
+    return NextResponse.json(list);
+  } catch (e) {
+    return NextResponse.json({ error: 'Failed to list quizzes' }, { status: 500 });
   }
 }
 
 export async function POST(request: Request) {
+  const body = await request.json();
+  const { title, description, type, organizationId, creator } = body as any;
+  if (!title) return NextResponse.json({ error: 'title required' }, { status: 400 });
+
+  const users = await readJson(usersPath, []);
+  const members = await readJson(membersPath, []);
+  const creatorId = creator?.id || creator?.userId || null;
+
+  if (organizationId && creatorId) {
+    const ok = isMemberOfOrg(members, creatorId, organizationId);
+    if (!ok) return NextResponse.json({ error: 'creator not in organization' }, { status: 403 });
+  }
+
   try {
-    const newQuiz = await request.json();
-    
-    // Validate required fields
-    if (!newQuiz.title || !newQuiz.questions) {
-      return NextResponse.json(
-        { error: 'Missing required fields: title and questions are required' },
-        { status: 400 }
-      );
-    }
-    
-    // Validate quiz structure
-    if (!Array.isArray(newQuiz.questions) || newQuiz.questions.length === 0) {
-      return NextResponse.json(
-        { error: 'Quiz must have at least one question' },
-        { status: 400 }
-      );
-    }
-    
-    // Validate each question
-    for (const question of newQuiz.questions) {
-      if (!question.id || !question.question || !question.options || question.correctAnswer === undefined) {
-        return NextResponse.json(
-          { error: 'Each question must have: id, question, options, and correctAnswer' },
-          { status: 400 }
-        );
-      }
-    }
-    
-    const quizzesDir = path.join(process.cwd(), 'data', 'quizzes');
-    
-    // Create quizzes directory if it doesn't exist
-    if (!fs.existsSync(quizzesDir)) {
-      fs.mkdirSync(quizzesDir, { recursive: true });
-    }
-    
-    // Build/provide an id if missing - professional, collision-safe slug
-    const slugify = (input: string) => {
-      return String(input)
-        .toLowerCase()
-        .normalize('NFKD')
-        .replace(/[\u0300-\u036f]/g, '') // remove diacritics
-        .replace(/[^a-z0-9]+/g, '-')
-        .replace(/^-+|-+$/g, '')
-        .replace(/-{2,}/g, '-')
-        .slice(0, 60);
+    await fs.mkdir(quizzesDir, { recursive: true });
+    const cryptoMod = await import('crypto');
+    const id = body.id || cryptoMod.randomUUID();
+    const now = new Date().toISOString();
+    const quiz = {
+      id,
+      title,
+      description: description || '',
+      type: (type || 'quiz').toLowerCase(),
+      privacy: organizationId ? 'org' : 'public',
+      status: 'draft',
+      createdAt: now,
+      creator: creator || null,
+      questions: Array.isArray(body.questions) ? body.questions : [],
     };
-    const shortStamp = () => {
-      const t = Date.now().toString(36);
-      const r = Math.random().toString(36).slice(2, 6);
-      return `${t}-${r}`;
-    };
-    let quizId = newQuiz.id && typeof newQuiz.id === 'string' && newQuiz.id.trim().length > 0
-      ? slugify(newQuiz.id)
-      : `${slugify(newQuiz.title)}-${shortStamp()}`;
-    
-    // Ensure uniqueness with bounded retries
-    let filePath = path.join(quizzesDir, `${quizId}.json`);
-    let attempts = 0;
-    while (fs.existsSync(filePath) && attempts < 5) {
-      quizId = `${slugify(newQuiz.title)}-${shortStamp()}`;
-      filePath = path.join(quizzesDir, `${quizId}.json`);
-      attempts++;
-    }
-    if (fs.existsSync(filePath)) {
-      return NextResponse.json(
-        { error: 'Could not allocate unique quiz id. Try again.' },
-        { status: 500 }
-      );
-    }
-    
-    // Attach creator metadata if missing
-    if (!newQuiz.creator && request.headers.get('x-creator-id')) {
-      newQuiz.creator = {
-        id: request.headers.get('x-creator-id'),
-        name: request.headers.get('x-creator-name'),
-        email: request.headers.get('x-creator-email'),
-        role: request.headers.get('x-creator-role'),
-      };
-      newQuiz.createdAt = newQuiz.createdAt || new Date().toISOString();
-    }
-
-    // Attach normalized id and defaults before write
-    const quizToSave = {
-      ...newQuiz,
-      id: quizId,
-      type: newQuiz.type || 'certificate',
-      privacy: newQuiz.privacy || 'public',
-      status: newQuiz.status || 'published',
-    };
-
-    // Write quiz to individual file
-    fs.writeFileSync(filePath, JSON.stringify(quizToSave, null, 2));
-    
-    return NextResponse.json(
-      { message: 'Quiz added successfully', quiz: quizToSave },
-      { status: 201 }
-    );
-  } catch (error) {
-    console.error('Error adding quiz:', error);
-    return NextResponse.json(
-      { error: 'Failed to add quiz' },
-      { status: 500 }
-    );
+    await fs.writeFile(path.join(quizzesDir, `${id}.json`), JSON.stringify(quiz, null, 2));
+    return NextResponse.json(quiz, { status: 201 });
+  } catch (e) {
+    return NextResponse.json({ error: 'Failed to create quiz' }, { status: 500 });
   }
 }

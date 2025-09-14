@@ -10,7 +10,7 @@ export default function LoginPage() {
   const { login } = useAuth();
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
-  const [role, setRole] = useState<UserRole>('student');
+  const [role, setRole] = useState<UserRole>('learner');
   const [error, setError] = useState<string | null>(null);
   const [mode, setMode] = useState<'signin' | 'create'>('signin');
   const [password, setPassword] = useState('');
@@ -42,6 +42,10 @@ export default function LoginPage() {
       }
       const userObj = await res.json();
       login(userObj);
+      if (userObj.mustChangePassword) {
+        router.push('/dashboard?changePassword=1');
+        return;
+      }
       router.push(userObj.role === 'admin' ? '/admin' : '/dashboard');
       return;
     }
@@ -62,79 +66,111 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="max-w-md mx-auto px-4 sm:px-6 lg:px-8 py-10">
-      <h1 className="text-3xl font-bold text-gray-900 mb-6">Login</h1>
-
-      <div className="flex space-x-2 mb-4">
-        <button type="button" onClick={() => setMode('signin')} className={`px-3 py-1.5 rounded-md border ${mode==='signin'?'bg-crypto-primary text-white border-crypto-primary':'border-gray-300'}`}>Sign in</button>
-        <button type="button" onClick={() => setMode('create')} className={`px-3 py-1.5 rounded-md border ${mode==='create'?'bg-crypto-primary text-white border-crypto-primary':'border-gray-300'}`}>Create profile</button>
-      </div>
-
-      <form onSubmit={handleSubmit} className="bg-white shadow rounded-lg p-6 space-y-4">
-        {error && (
-          <div className="p-3 bg-red-50 text-red-700 border border-red-200 rounded">{error}</div>
-        )}
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
-          <input
-            type="text"
-            className="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-crypto-primary"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="Satoshi Nakamoto"
-            required
-          />
+    <div className="login-container">
+        <div className="login-mask"></div>
+        <div className="login-card">
+          <h2 className="login-title">CryptoCross</h2>
+          <p className="login-subtitle">Gamified Learning & Certification</p>
+        
+        <div className="login-tabs">
+          <button 
+            type="button" 
+            onClick={() => setMode('signin')} 
+            className={mode === 'signin' ? 'login-tab-active' : 'login-tab'}
+          >
+            Login
+          </button>
+          <button 
+            type="button" 
+            onClick={() => setMode('create')} 
+            className={mode === 'create' ? 'login-tab-active' : 'login-tab'}
+          >
+            Sign Up
+          </button>
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-          <input
-            type="email"
-            className="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-crypto-primary"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="satoshi@bitcoin.org"
-            required
-          />
-        </div>
+        <form onSubmit={handleSubmit} className="login-form">
+          {error && (
+            <div className="p-3 bg-red-500/20 text-red-300 border border-red-500/30 rounded-lg">{error}</div>
+          )}
 
-        {mode === 'create' && (
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Role</label>
-            <select
-              className="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-crypto-primary bg-white"
-              value={role}
-              onChange={(e) => setRole(e.target.value as UserRole)}
-            >
-              <option value="student">Student / Learner</option>
-              <option value="professor">Professor / Individual</option>
-              <option value="organization">Private School / Company</option>
-            </select>
+          {mode === 'create' && (
+            <div className="form-input-container">
+              <span className="material-symbols-outlined form-input-icon">person</span>
+              <input
+                type="text"
+                className="form-input"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Full Name"
+                required
+              />
+            </div>
+          )}
+
+          <div className="form-input-container">
+            <span className="material-symbols-outlined form-input-icon">mail</span>
+            <input
+              type="email"
+              className="form-input"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Email"
+              required
+            />
           </div>
-        )}
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
-          <input
-            type="password"
-            className="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-crypto-primary"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="********"
-            required
-          />
-        </div>
+          <div className="form-input-container">
+            <span className="material-symbols-outlined form-input-icon">lock</span>
+            <input
+              type="password"
+              className="form-input"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Password"
+              required
+            />
+          </div>
 
-        <button
-          type="submit"
-          className="w-full bg-crypto-primary text-white font-semibold py-2 rounded-md hover:opacity-90"
-        >
-          Continue
-        </button>
-      </form>
+          {mode === 'signin' && (
+            <a className="forgot-password" href="#">
+              Forgot Password?
+            </a>
+          )}
 
-      <p className="text-sm text-gray-500 mt-4">No passwords yet; this is a demo login with roles.</p>
+          {mode === 'create' && (
+            <div className="form-input-container">
+              <span className="material-symbols-outlined form-input-icon">work</span>
+              <select
+                className="form-input"
+                value={role}
+                onChange={(e) => setRole(e.target.value as UserRole)}
+              >
+                <option value="learner">Student</option>
+                <option value="educator">Professor</option>
+                <option value="moderator">Institution</option>
+              </select>
+            </div>
+          )}
+
+          <div className="role-buttons">
+            <button
+              type="submit"
+              className="role-button-primary"
+            >
+              <span className="truncate">Login</span>
+            </button>
+            
+          </div>
+        </form>
+
+        <p className="signup-link">
+          Don't have an account?{' '}
+          <a href="#" onClick={() => setMode('create')}>
+            Sign Up
+          </a>
+        </p>
+      </div>
     </div>
   );
 }

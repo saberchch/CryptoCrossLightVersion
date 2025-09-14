@@ -3,17 +3,21 @@ import { promises as fs } from 'fs';
 import path from 'path';
 
 const dataPath = path.join(process.cwd(), 'data', 'users.json');
+const templatePath = path.join(process.cwd(), 'data', 'user_template.json');
 
 interface User {
   id: string;
   name: string;
   email: string;
-  role: 'student' | 'professor' | 'organization' | 'admin';
+  role: 'learner' | 'educator' | 'admin' | 'moderator';
+  username?: string;
   avatarUrl?: string;
   xp: number;
   history: any[];
   passwordHash?: string;
 }
+
+type AnyUser = User & Record<string, any>;
 
 async function readUsers(): Promise<User[]> {
   try {
@@ -24,9 +28,18 @@ async function readUsers(): Promise<User[]> {
   }
 }
 
-async function writeUsers(users: User[]) {
+async function writeUsers(users: AnyUser[]) {
   await fs.mkdir(path.dirname(dataPath), { recursive: true });
   await fs.writeFile(dataPath, JSON.stringify(users, null, 2));
+}
+
+async function readTemplate(): Promise<{ base?: Record<string, any>; roles?: Record<string, Record<string, any>> }> {
+  try {
+    const raw = await fs.readFile(templatePath, 'utf-8');
+    return JSON.parse(raw);
+  } catch {
+    return {};
+  }
 }
 
 export async function GET(request: Request) {
@@ -55,17 +68,59 @@ export async function POST(request: Request) {
   }
   const cryptoMod = await import('crypto');
   const passwordHash = cryptoMod.createHash('sha256').update(String(body.password)).digest('hex');
-  const user: User = {
+  const template = await readTemplate();
+  // Normalize legacy roles to new model
+  const incomingRole = String(body.role || '').toLowerCase();
+  const normalizedRole: User['role'] = incomingRole === 'student' ? 'learner'
+    : incomingRole === 'professor' ? 'educator'
+    : incomingRole === 'organization' ? 'learner' // default people to learner; orgs are entities
+    : incomingRole === 'moderator' ? 'moderator'
+    : incomingRole === 'admin' ? 'admin'
+    : 'learner';
+  const selectedRole = normalizedRole;
+  const baseDefaults = template.base || {};
+  const roleDefaults = (template.roles && template.roles[selectedRole]) || { role: selectedRole };
+
+  if (!body.name || !body.email) {
+    return NextResponse.json({ error: 'Name and email are required' }, { status: 400 });
+  }
+
+  // Generate unique username if not provided
+  const baseUsername = (body.username || String(body.name || '')).toLowerCase().trim()
+    .replace(/[^a-z0-9]+/g, '.').replace(/^\.+|\.+$/g, '') || `user${Date.now()}`;
+  let username = baseUsername;
+  let counter = 1;
+  const usernameTaken = (u: any) => u.username && u.username.toLowerCase() === username.toLowerCase();
+  while (users.some(usernameTaken)) {
+    counter += 1;
+    username = `${baseUsername}-${counter}`;
+  }
+
+  const user: AnyUser = {
     id: body.id || crypto.randomUUID(),
+    ...baseDefaults,
+    ...roleDefaults,
+    // Explicit fields take precedence over defaults
     name: body.name,
     email: body.email,
-    role: body.role || 'student',
-    avatarUrl: body.avatarUrl || '',
-    xp: Number(body.xp) || 0,
-    history: Array.isArray(body.history) ? body.history : [],
+    role: selectedRole,
+    username,
+    avatarUrl: body.avatarUrl ?? baseDefaults.avatarUrl ?? '',
+    xp: typeof body.xp === 'number' ? body.xp : (typeof baseDefaults.xp === 'number' ? baseDefaults.xp : 0),
+    history: Array.isArray(body.history) ? body.history : (Array.isArray(baseDefaults.history) ? baseDefaults.history : []),
+    status: body.status ?? baseDefaults.status ?? 'active',
+    emailVerified: body.emailVerified ?? baseDefaults.emailVerified ?? false,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    lastLoginAt: null,
+    forcePasswordChange: false,
     passwordHash,
   };
-  users.push(user);
+
+  // Remove plaintext password if accidentally included
+  delete (user as any).password;
+
+  users.push(user as User);
   await writeUsers(users);
   const { passwordHash: _omit, ...safeUser } = user;
   return NextResponse.json(safeUser, { status: 201 });

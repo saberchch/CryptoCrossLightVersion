@@ -12,7 +12,7 @@ interface NewQuestion {
   explanation: string;
 }
 
-export default function CreatorPanel() {
+export default function CreatorPanel({ orgId }: { orgId?: string }) {
   const { user } = useAuth();
   const [quizId, setQuizId] = useState('');
   const [title, setTitle] = useState('');
@@ -87,7 +87,7 @@ export default function CreatorPanel() {
       };
       const res = await fetch('/api/quizzes', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...(orgId ? { 'x-org-id': orgId } : {}) },
         body: JSON.stringify(payload),
       });
       const data = await res.json();

@@ -14,70 +14,115 @@ export default async function HomePage() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold text-gray-900 mb-4">
-          Welcome to CryptoCross
-        </h1>
-        <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-          Master cryptocurrency fundamentals through interactive quizzes. 
-          Test your knowledge, earn certificates, and advance your crypto education.
-        </p>
-      </div>
-
-      <div className="mb-8">
-        <h2 className="text-2xl font-semibold text-gray-900 mb-6">Available Quizzes</h2>
-        {!isLoggedIn ? (
-          <div className="text-center py-12 border rounded-lg bg-white">
-            <p className="text-lg mb-4">Please log in to view and take quizzes.</p>
-            <Link href="/login" className="inline-block px-4 py-2 rounded-md bg-crypto-primary text-white">Login</Link>
-          </div>
-        ) : quizzes.length === 0 ? (
-          <div className="text-center py-12">
-            <div className="text-gray-500 mb-4">
-              <svg className="w-16 h-16 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-              </svg>
-              <p className="text-lg">No quizzes available yet.</p>
-              <p className="text-sm">Check back later or contact an administrator.</p>
-            </div>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {quizzes.map((quiz) => (
-              <QuizCard key={quiz.id} quiz={quiz} />
-            ))}
-          </div>
-        )}
-      </div>
-
-      <div className="bg-gradient-to-r from-crypto-primary to-crypto-secondary rounded-lg p-8 text-white text-center shadow-xl">
-        <h3 className="text-2xl font-bold mb-4">Ready to Start Learning?</h3>
-        <p className="text-lg mb-6 opacity-90">
-          Choose a quiz above to begin your crypto education journey. 
-          Each quiz covers essential topics and awards certificates upon completion.
-        </p>
-        <div className="flex justify-center space-x-4 text-sm">
-          <div className="flex items-center">
-            <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            Interactive Quizzes
-          </div>
-          <div className="flex items-center">
-            <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
-            Digital Certificates
-          </div>
-          <div className="flex items-center">
-            <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-            </svg>
-            Instant Results
+    <>
+      {/* Hero Section */}
+      <section className="hero-section">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[#f4c025]/10 to-transparent opacity-50"></div>
+        <div className="hero-content">
+          <h1 className="hero-title">
+            CryptoCross: Gamified Web3 Education & Certification
+          </h1>
+          <p className="hero-subtitle">
+            Master blockchain, NFTs, and DeFi through an engaging, gamified learning experience. Earn valuable certifications and step into the future of the internet.
+          </p>
+          <div className="hero-buttons">
+            <Link href="/login" className="btn-primary">
+              <span className="truncate">Start Learning</span>
+            </Link>
+            <Link href="/marketplace" className="btn-secondary">
+              <span className="truncate">Explore Marketplace</span>
+            </Link>
           </div>
         </div>
-      </div>
-    </div>
+        <div className="absolute -bottom-1 w-full h-20 bg-gradient-to-t from-[#0d0f1a] to-transparent"></div>
+      </section>
+
+      {/* Features Section */}
+      <section className="feature-section">
+        <div className="mx-auto max-w-7xl">
+          <div className="feature-grid">
+            <div className="feature-card group">
+              <img 
+                alt="Quizzes" 
+                className="feature-image" 
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-SMfFvawyaXEs2RPFHaqwzhiuxfCkeAfFLtVru1-OCl9_nvSp-cxH63w_xBMtsap2-aCdTHzDMqRTdzBhDS2QmTsrsV6YwXrqS3Q3GC8dZhxYhdV948lcV-B5R4hjp9T7r0YHqwPPSGItAHgjCgebF9UVX7ZCRrdOM1LJjjQiEpw40fkNAiRJvLdZm4trp5bb2A1cWsQIYDM3Dg3Z9sEryRSb6pW4M-nCYK9KY8YU0-Lck4ub5IY-y_7-wp6f1b62HGpM7DbS5Q"
+              />
+              <div className="feature-overlay"></div>
+              <div className="feature-content">
+                <h3 className="feature-title">Quizzes</h3>
+                <p className="feature-description">Test your knowledge.</p>
+              </div>
+            </div>
+            
+            <div className="feature-card group">
+              <img 
+                alt="Flashcards" 
+                className="feature-image" 
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDvrA0KiKaaVTMjpvD4c-jZxlR2XusUV2R-lhTPu3yR9MMAiriYhBElrxTtOA96shdVDxtLyRs6jVyWd0WlHiI0wA6ufqwzQKpDMNuebE8cigyNCElq8DS9ayvaMKg7sifDSWbfJP2S-47hYjtkcseoTnNxICbhlX0ixisVrXrC20DJmWcefRIpgo4AqOeGWmd0EsIodc-9dHS1G2hqzRqcQpL8DVWBf0h5QKx4Kcceq84iei_Y-ZxWY_GJlW4saMR3ZxZjYgHGDQ"
+              />
+              <div className="feature-overlay"></div>
+              <div className="feature-content">
+                <h3 className="feature-title">Flashcards</h3>
+                <p className="feature-description">Master key concepts.</p>
+              </div>
+            </div>
+            
+            <div className="feature-card group">
+              <img 
+                alt="Mystery Packs" 
+                className="feature-image" 
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuC6r5D3PilK2x11j8Bx_IRVji0yOyeQBNPg2XO_TjCQNs0y_mNPWRErGlfBKqWP6l0qR4TMHPeL7hPDBPkGzuQh6_tD268nNcAem3GVSHdE2uoB1wTxl8BWXnf81nqr8T31wPiTyU_vyuagH12zeMDPAGnBW5KiDngpSuGznhFyWBxbVdnmHh4xR6hOOQ9UHrLByJvt5Vtam-acnf3Y7ERYDOMrLGL0NJoCoyACqqkmVxuv6y8I_ti7aCiD9AWJHHMeJMrfpcbRsA"
+              />
+              <div className="feature-overlay"></div>
+              <div className="feature-content">
+                <h3 className="feature-title">Mystery Packs</h3>
+                <p className="feature-description">Unlock rare items.</p>
+              </div>
+            </div>
+            
+            <div className="feature-card group">
+              <img 
+                alt="Certificates" 
+                className="feature-image" 
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuAw53VjqxFaPNq8inte243HS-AZR9T5MTOoteqmYM_qZbrycnWlGepO4ejReO9aXHjRN1RM7IcQGA_p2pX3gbLW1HwsCPSm8BFHQaZ-mXR-p_lmaomYVsAZ-8QQIhgKQ06F8vKnBmDiFzEOKk3C_gWztzuqshNpLIYFNgPSPbonhoaya2-g05tix3jJBx46zElCFHmarzFgptyibt05Ss2DddP6WI7D_tKmPZ030C3WdkDTWCvucOWSDKMHfrcPdgfQRf_E4KOPwg"
+              />
+              <div className="feature-overlay"></div>
+              <div className="feature-content">
+                <h3 className="feature-title">Certificates</h3>
+                <p className="feature-description">Showcase your skills.</p>
+              </div>
+            </div>
+            
+            <div className="feature-card group">
+              <img 
+                alt="Marketplace" 
+                className="feature-image" 
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuAWaocZG0rtTYAcp-EoqRJrahVX49BbAGzJQ3nEbjd_-Ndbt5tp8c48N7g2ksx0YihPhvEOCeLjJMXd7h7kV4RwjR-n-KfZ15aEwKD2glY7al0k1zvjOMK0UJ6wc587_d-8rqpWV6nAknhAq2ojgh11rR636W7wv7cl_2-iYS3xkfcC-DHDShSSCHMRea69zcUlJtJrlEtqOkCL_B2xGsRKA9_N67veBlP1KwATBGGudT15RLidcnMrFWiRLDGYUfeeYsveULwt5w"
+              />
+              <div className="feature-overlay"></div>
+              <div className="feature-content">
+                <h3 className="feature-title">Marketplace</h3>
+                <p className="feature-description">Trade your assets.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="cta-section">
+        <div className="cta-content">
+          <h2 className="cta-title">Ready to Start Your Journey?</h2>
+          <p className="cta-subtitle">
+            Join CryptoCross today and unlock a new world of Web3 learning. Gain valuable skills, earn certifications, and become part of a thriving community.
+          </p>
+          <div className="mt-10">
+            <Link href="/login" className="cta-button">
+              <span className="truncate">Get Started Now</span>
+            </Link>
+          </div>
+        </div>
+      </section>
+    </>
   );
 }

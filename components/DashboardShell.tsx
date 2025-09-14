@@ -25,16 +25,20 @@ export default function DashboardShell({ title, children }: DashboardShellProps)
       { href: '/dashboard#leaderboard', label: 'Leaderboards' },
       { href: '/dashboard#analytics', label: 'Analytics' },
     ];
-    if (user?.role === 'professor') base.splice(2, 0, { href: '/dashboard#creator', label: 'Creator' });
+    if (user?.role === 'educator' || user?.role === 'admin' || user?.role === 'moderator') base.splice(2, 0, { href: '/dashboard#creator', label: 'Creator' });
+    if (user?.role === 'moderator' || user?.role === 'admin') {
+      base.splice(3, 0, { href: '/dashboard#people', label: 'People' });
+      base.splice(4, 0, { href: '/dashboard#moderation', label: 'Moderation' });
+    }
     if (user?.role === 'admin') base.push({ href: '/admin', label: 'Admin' });
     return base;
   }, [user?.role]);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gold-linear bg-gold-radial">
       <div className="flex min-h-screen">
         {/* Sidebar */}
-        <aside className={`transition-all duration-200 ${sidebarOpen ? 'w-64' : 'w-16'} bg-gradient-to-b from-white to-yellow-50 border-r border-crypto-accent shadow-sm`}>
+        <aside className={`transition-all duration-200 ${sidebarOpen ? 'w-64' : 'w-16'} bg-gradient-to-b from-white to-yellow-50 border-r border-crypto-accent shadow-gold-soft`}>
           <div className="h-16 flex items-center justify-between px-4">
             <Link href="/" className="text-xl font-bold text-crypto-primary">CryptoCross</Link>
             <button aria-label="Toggle sidebar" onClick={() => setSidebarOpen(!sidebarOpen)} className="text-gray-600 hover:text-crypto-primary">
@@ -74,7 +78,7 @@ export default function DashboardShell({ title, children }: DashboardShellProps)
               <h1 className="text-lg font-semibold text-gray-900">{title || 'Dashboard'}</h1>
             </div>
             <div className="hidden md:flex items-center gap-3">
-              {user?.role === 'professor' && (
+              {(user?.role === 'educator' || user?.role === 'admin' || user?.role === 'moderator') && (
                 <Link href="/dashboard#creator" className="btn-primary text-sm">Create Quiz</Link>
               )}
               {!user ? (

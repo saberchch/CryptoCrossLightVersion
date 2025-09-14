@@ -3,7 +3,7 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-export type UserRole = 'student' | 'professor' | 'organization' | 'admin';
+export type UserRole = 'learner' | 'educator' | 'moderator' | 'admin';
 
 export interface QuizHistoryItem {
   quizId: string;
