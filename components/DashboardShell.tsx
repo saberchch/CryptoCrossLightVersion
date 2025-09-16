@@ -35,7 +35,7 @@ export default function DashboardShell({ title, children }: DashboardShellProps)
   }, [user?.role]);
 
   return (
-    <div className="min-h-screen bg-gold-linear bg-gold-radial">
+    <div className="min-h-screen bg-gold-linear">
       <div className="flex min-h-screen">
         {/* Sidebar */}
         <aside className={`transition-all duration-200 ${sidebarOpen ? 'w-64' : 'w-16'} bg-gradient-to-b from-white to-yellow-50 border-r border-crypto-accent shadow-gold-soft`}>
@@ -55,7 +55,7 @@ export default function DashboardShell({ title, children }: DashboardShellProps)
           </nav>
           <div className="mt-auto p-4 hidden md:block">
             {user && (
-              <div className="flex items-center space-x-3 p-3 bg-white border rounded-md">
+              <div className="flex items-center space-x-3 p-3 bg-black border rounded-md">
                 <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-xs">
                   {user.avatarUrl ? <img src={user.avatarUrl} alt={user.name} className="w-full h-full object-cover rounded-full" /> : user.name[0]}
                 </div>

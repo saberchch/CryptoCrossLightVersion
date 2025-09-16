@@ -17,17 +17,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-        <link 
-          as="style" 
-          href="https://fonts.googleapis.com/css2?display=swap&family=Noto+Sans%3Awght%40400%3B500%3B700%3B900%3Bfamily=Space+Grotesk%3Awght%40400%3B500%3B700" 
-          onLoad="this.rel='stylesheet'" 
-          rel="stylesheet" 
-        />
-        <link 
-          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" 
-          rel="stylesheet" 
-        />
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+      <link
+        href="https://fonts.googleapis.com/css2?display=swap&family=Noto+Sans:wght@400;500;700;900&family=Space+Grotesk:wght@400;500;700"
+        rel="stylesheet"
+      />
+      <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+        rel="stylesheet"
+      />
       </head>
       <body className="bg-[#0d0f1a] min-h-screen" style={{fontFamily: '"Space Grotesk", "Noto Sans", sans-serif'}}>
         <AuthProvider>

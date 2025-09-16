@@ -168,7 +168,7 @@ export default function CreatorPanel({ orgId }: { orgId?: string }) {
     }
   };
 
-  if (!user || user.role !== 'professor') return null;
+  if (!user || user.role !== 'educator') return null;
 
   return (
     <div className="space-y-6" id="creator">
