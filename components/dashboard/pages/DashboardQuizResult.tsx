@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import ResultSummary from '/home/saberch/CryptoCross_lightv/components/ResultSummary';
-import Question from '/home/saberch/CryptoCross_lightv/components/Question';
-import { QuizResult } from '/home/saberch/CryptoCross_lightv/lib/quiz';
+import ResultSummary from '../../ResultSummary';
+import Question from '../../Question';
+import { QuizResult } from '@/lib/quiz';
 
 interface DashboardQuizResultProps {
   quizId: string;
