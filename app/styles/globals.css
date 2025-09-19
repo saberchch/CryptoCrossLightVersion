@@ -1,0 +1,474 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---------------- Base ---------------- */
+@layer base {
+  html {
+    font-family: "Space Grotesk", "Noto Sans", sans-serif;
+  }
+
+  :root {
+    /* Theme Colors */
+    --glow-color: #f4c025;
+    --primary-color: #f4c025;
+    --dark-bg: #0d0f1a;
+    --panel-bg: #111;
+
+    /* Gold Palette */
+    --gold-50: #fffbeb;
+    --gold-100: #fef3c7;
+    --gold-200: #fde68a;
+    --gold-300: #fcd34d;
+    --gold-400: #fbbf24;
+    --gold-500: #f59e0b;
+    --gold-600: #d97706;
+    --gold-700: #b45309;
+  }
+
+  body {
+    background-color: var(--dark-bg);
+    color: white;
+  }
+
+  /* -------- Animations -------- */
+  @keyframes floating {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+  }
+
+  @keyframes shimmer {
+    0% { transform: translateX(-120%); }
+    100% { transform: translateX(120%); }
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% {
+      box-shadow: 0 0 5px var(--glow-color),
+                  0 0 10px var(--glow-color),
+                  0 0 15px var(--glow-color);
+    }
+    50% {
+      box-shadow: 0 0 10px var(--glow-color),
+                  0 0 20px var(--glow-color),
+                  0 0 30px var(--glow-color);
+    }
+  }
+
+  /* Utility classes */
+  .glow { box-shadow: 0 0 5px var(--glow-color), 0 0 10px var(--glow-color), 0 0 15px var(--glow-color); }
+  .text-glow { text-shadow: 0 0 8px var(--glow-color); }
+  .animate-floating { animation: floating 3s ease-in-out infinite; }
+  .glow-pulse { animation: pulse-glow 2.5s ease-in-out infinite; }
+
+  .shine {
+    background: linear-gradient(90deg,
+      rgba(255,255,255,0) 0%,
+      rgba(255,255,255,0.25) 50%,
+      rgba(255,255,255,0) 100%);
+    background-size: 200% 100%;
+    animation: shimmer 2.2s linear infinite;
+  }
+}
+
+/* ---------------- Components ---------------- */
+@layer components {
+
+  /* -------- Buttons -------- */
+  .btn-primary {
+    @apply bg-[var(--primary-color)] hover:bg-yellow-400
+           text-[var(--dark-bg)] font-bold py-3 px-6 rounded-full
+           transition-all duration-300 glow;
+  }
+
+  .btn-secondary {
+    @apply bg-transparent border-2 border-[var(--primary-color)]
+           text-[var(--primary-color)] font-bold py-3 px-6 rounded-full
+           transition-all duration-300
+           hover:bg-[var(--primary-color)] hover:text-[var(--dark-bg)]
+           hover:shadow-[0_0_20px_var(--primary-color)];
+  }
+
+  .btn-success {
+    @apply bg-crypto-success hover:bg-green-600 text-white
+           font-semibold py-2 px-4 rounded-lg
+           transition-colors duration-200;
+  }
+
+  .btn-danger {
+    @apply bg-crypto-danger hover:bg-red-600 text-white
+           font-semibold py-2 px-4 rounded-lg
+           transition-colors duration-200;
+  }
+
+  /* -------- Cards -------- */
+  .card, .feature-card {
+    @apply bg-gray-900/80 rounded-lg border border-transparent p-6
+           relative overflow-hidden transition-all duration-300 transform
+           hover:-translate-y-2 text-white;
+  }
+
+  .card:hover, .feature-card:hover {
+    border-color: rgba(244,192,37,0.7);
+    box-shadow: 0 0 10px rgba(244,192,37,0.5),
+                0 0 20px rgba(244,192,37,0.3);
+  }
+
+  .feature-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(120deg,
+      rgba(255,255,255,0) 0%,
+      rgba(255,255,255,0.2) 20%,
+      rgba(255,255,255,0) 40%);
+    pointer-events: none;
+  }
+  .feature-card:hover::after { animation: shimmer 1.2s linear; }
+
+  .card-header { @apply flex items-start justify-between mb-4; }
+  .card-title { @apply text-xl font-semibold text-[var(--gold-500)]; }
+  .card-subtitle { @apply text-sm text-gray-300; }
+  .card-footer { @apply mt-4 pt-4 border-t border-gray-700; }
+
+  .gold-accent { @apply text-[var(--primary-color)]; }
+  .gold-border { @apply border border-[#493f22]/50; }
+
+  /* -------- Hero Section -------- */
+  .hero-section {
+    @apply relative flex items-center justify-center overflow-hidden py-20;
+    min-height: 700px;
+    background-image: linear-gradient(rgba(13,15,26,0.9) 0%, rgba(13,15,26,1) 100%);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  .hero-content { @apply relative z-10 mx-auto max-w-5xl text-center px-4; }
+  .hero-title {
+    @apply text-white font-black leading-tight tracking-tighter text-glow animate-floating;
+    font-size: 5rem;
+  }
+  .hero-subtitle {
+    @apply mt-6 text-gray-300 font-medium tracking-wide max-w-3xl mx-auto;
+    font-size: 1.125rem;
+  }
+  .hero-buttons { @apply mt-12 flex flex-wrap justify-center gap-4; }
+
+  @media (min-width: 640px) { .hero-title { font-size: 6rem; } .hero-subtitle { font-size: 1.25rem; } }
+  @media (min-width: 768px) { .hero-title { font-size: 7rem; } }
+
+  /* -------- Dashboard Layout -------- */
+  .dashboard-layout {
+    @apply flex min-h-screen w-full text-white bg-[var(--dark-bg)];
+    flex-direction: row; /* sidebar + main */
+  }
+
+  /* Sidebar */
+  .dashboard-sidebar {
+    position: fixed;
+    top: 64px; /* below header */
+    left: 0;
+    bottom: 0;
+    width: 240px; /* or 64px if collapsed */
+    overflow-y: auto;
+    transition: width 0.3s ease;
+    background-color: #111;
+    z-index: 10;
+  }
+  
+
+  .sidebar-nav { @apply flex flex-col gap-2; }
+  .sidebar-nav-item {
+    @apply flex items-center gap-3 px-4 py-3 rounded-lg
+           hover:bg-[#1e190a] transition-colors;
+  }
+  .sidebar-nav-item-active {
+    @apply flex items-center gap-3 px-4 py-3 rounded-lg
+           bg-[var(--primary-color)] text-black font-bold;
+    box-shadow: 0 0 10px rgba(244,192,37,0.6),
+                0 0 20px rgba(244,192,37,0.4);
+  }
+  .sidebar-nav-text { @apply text-sm font-medium; }
+  .sidebar-bottom { @apply flex flex-col gap-2; }
+
+  /* Header */
+  .dashboard-header {
+    @apply flex items-center justify-between whitespace-nowrap
+           border-b border-solid border-[#2a2310] px-10 py-4;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background-color: var(--dark-bg);
+  }
+
+  /* Main Content */
+  .dashboard-main-wrapper { @apply flex-1 flex flex-col relative; }
+  .dashboard-main {
+    @apply flex-1 overflow-y-auto p-8;
+    margin-right: 300px; /* space for right panel */
+  }
+
+  /* Right Panel */
+  .dashboard-right-panel {
+    position: fixed;
+    top: 64px; /* height of header */
+    right: 0;
+    bottom: 0;
+    background-color: #111;
+    color: #fff;
+    padding: 1rem;
+    overflow-y: auto;
+    transition: width 0.3s ease, background-color 0.3s ease;
+    z-index: 20;
+  }
+  
+  .dashboard-right-panel.collapsed {
+    width: 60px;
+    padding: 1rem 0.3rem;
+  }
+  .dashboard-right-panel.collapsed .full-content { display: none; }
+  .dashboard-right-panel.collapsed .icon-only {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+  
+
+  /* -------- Quiz -------- */
+  .quiz-container { @apply flex h-auto min-h-screen w-full flex-col text-white overflow-x-hidden bg-[#0d0d12]; }
+  .quiz-layout { @apply flex flex-col h-full; }
+  .quiz-header { @apply flex items-center justify-between border-b border-solid border-[#333340] px-10 py-4; }
+  .quiz-option-label {
+    @apply flex items-center gap-4 rounded-lg border-2 border-solid border-[#333340]
+           p-4 cursor-pointer transition-all duration-300
+           hover:border-[var(--primary-color)];
+  }
+  .quiz-submit-button {
+    @apply flex min-w-[150px] max-w-[480px] items-center justify-center
+           h-12 px-6 bg-[var(--primary-color)] text-black font-bold
+           rounded-lg glow transition-all duration-300 hover:brightness-110;
+  }
+
+  /* -------- Login -------- */
+  .login-container {
+    @apply relative flex h-auto min-h-screen w-full flex-col items-center justify-center bg-black p-4;
+    background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.2) 1px, transparent 0);
+    background-size: 20px 20px;
+  }
+  .login-card {
+    @apply relative z-10 flex w-full max-w-md flex-col items-center
+           rounded-2xl border border-yellow-500/30 bg-black/50 p-8
+           backdrop-blur-sm glow;
+  }
+  .login-title { @apply mb-4 text-4xl font-bold text-yellow-400; }
+  .login-subtitle { @apply mb-8 text-lg text-gray-300; }
+
+  /* -------- Certificates -------- */
+  .certificate-container { @apply min-h-screen bg-gradient-to-br from-yellow-50 to-amber-50 py-8 px-4; }
+  .certificate {
+    @apply max-w-4xl mx-auto bg-white rounded-lg shadow-xl
+           border-4 border-crypto-primary p-8
+           bg-gradient-to-br from-white to-yellow-50;
+  }
+
+  /* -------- Footer -------- */
+  .footer { @apply bg-[#0a0c15] border-t border-solid border-b-[#493f22]/30; }
+  .footer-content { @apply mx-auto max-w-6xl py-12 px-10; }
+  .footer-links { @apply flex flex-wrap items-center justify-center gap-6; }
+  .footer-link {
+    @apply text-gray-400 hover:text-[var(--primary-color)]
+           text-sm font-medium leading-normal transition-colors;
+  }
+  .footer-social { @apply flex justify-center gap-6; }
+  .social-link { @apply text-gray-400 hover:text-[var(--primary-color)] transition-colors; }
+  .footer-bottom { @apply mt-8 border-t border-gray-800 pt-8 text-center; }
+  .footer-copyright { @apply text-gray-500 text-sm; }
+
+  /* -------- Dropdown Buttons -------- */
+  .dropdown-button {
+    @apply relative inline-flex items-center justify-center
+           px-4 py-2 rounded-md font-medium
+           border border-yellow-500/50 text-yellow-400
+           transition-all duration-300 bg-transparent;
+  }
+  .dropdown-button:hover {
+    @apply bg-yellow-400/20 text-yellow-300;
+    box-shadow: 0 0 10px rgba(244,192,37,0.6),
+                0 0 20px rgba(244,192,37,0.4),
+                0 0 30px rgba(244,192,37,0.2);
+  }
+  .dropdown-button.glow { @apply glow-pulse; }
+}
+
+/* Site header styling */
+.site-header {
+  position: sticky;       /* stays visible at top */
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  height: 64px;           /* adjust as needed */
+  background-color: #0d0f1a;
+  border-bottom: 1px solid rgba(244,192,37,0.1); /* subtle divider */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+}
+
+/* Push main content below header */
+.layout-container main {
+  margin-top: 64px;       /* same as header height */
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+/* Ensure the main content starts below the header */
+header.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background-color: #0d0f1a; /* same as body bg */
+}
+
+/* Give main some top spacing equal to header height */
+main {
+  margin-top: 80px; /* adjust to match header height */
+  display: flex;
+  flex-direction: column;
+  gap: 4rem; /* spacing between sections */
+}
+
+/* Hero section styles */
+.hero-section {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* vertical center */
+  align-items: center;     /* horizontal center */
+  min-height: calc(100vh - 80px); /* full viewport minus header */
+  padding: 2rem;
+  text-align: center;
+  color: white;
+}
+
+.hero-title {
+  font-size: 2.5rem;
+  font-weight: 900;
+  margin-bottom: 1rem;
+}
+
+.hero-subtitle {
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+/* ---------------- Feature Section ---------------- */
+.feature-section {
+  @apply py-20 px-4;
+  background-color: var(--dark-bg);
+}
+
+.feature-grid {
+  @apply grid gap-8;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+.feature-card {
+  @apply relative overflow-hidden rounded-xl cursor-pointer transform transition-all duration-300;
+  background-color: #111;
+  border: 1px solid transparent;
+}
+
+.feature-card:hover {
+  border-color: rgba(244,192,37,0.7);
+  box-shadow: 0 0 10px rgba(244,192,37,0.5),
+              0 0 20px rgba(244,192,37,0.3);
+  transform: translateY(-5px);
+}
+
+.feature-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg,
+    rgba(255,255,255,0) 0%,
+    rgba(255,255,255,0.2) 20%,
+    rgba(255,255,255,0) 40%);
+  pointer-events: none;
+}
+
+.feature-card:hover::after {
+  animation: shimmer 1.2s linear infinite;
+}
+
+.feature-image {
+  @apply w-full h-52 object-cover;
+}
+
+.feature-overlay {
+  @apply absolute inset-0 bg-gradient-to-t from-black/60 to-transparent;
+}
+
+.feature-content {
+  @apply absolute bottom-4 left-4 text-white;
+}
+
+.feature-title {
+  @apply text-xl font-bold text-[var(--gold-500)] mb-1;
+}
+
+.feature-description {
+  @apply text-sm text-gray-300;
+}
+/* ---------------- CTA Section ---------------- */
+.cta-section {
+  @apply relative flex flex-col items-center justify-center py-24 px-6 text-center;
+  background: linear-gradient(135deg, rgba(13,15,26,0.95), rgba(0,0,0,0.95));
+  color: white;
+  border-top: 1px solid rgba(244,192,37,0.1);
+  border-bottom: 1px solid rgba(244,192,37,0.1);
+}
+
+.cta-title {
+  @apply text-3xl sm:text-4xl md:text-5xl font-extrabold mb-6 text-glow;
+}
+
+.cta-subtitle {
+  @apply text-lg sm:text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto mb-8;
+  line-height: 1.6;
+}
+
+.cta-buttons {
+  @apply flex flex-wrap justify-center gap-4;
+}
+
+.cta-button-primary {
+  @apply bg-[var(--primary-color)] text-[var(--dark-bg)] font-bold py-3 px-8 rounded-full glow
+         transition-all duration-300 hover:brightness-110;
+}
+
+.cta-button-secondary {
+  @apply border-2 border-[var(--primary-color)] text-[var(--primary-color)] font-bold py-3 px-8 rounded-full
+         transition-all duration-300 hover:bg-[var(--primary-color)] hover:text-[var(--dark-bg)]
+         hover:shadow-[0_0_20px_var(--primary-color)];
+}
+
+/* Responsive tweaks */
+@media (min-width: 640px) {
+  .cta-title { font-size: 4rem; }
+  .cta-subtitle { font-size: 1.5rem; }
+}
+
+@media (min-width: 768px) {
+  .cta-title { font-size: 5rem; }
+  .cta-subtitle { font-size: 1.75rem; }
+}

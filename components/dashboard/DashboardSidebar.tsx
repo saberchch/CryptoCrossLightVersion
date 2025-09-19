@@ -2,11 +2,10 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { roleConfig, bottomItems, SidebarItem } from '@/lib/roleConfig';
+import { UserRole, roleConfig, bottomItems, SidebarItem } from '@/lib/roleConfig';
 
 interface DashboardSidebarProps {
-  role: string;
+  role: UserRole;
   collapsed: boolean;
   toggleCollapse: () => void;
   activeItem: string;
@@ -20,16 +19,13 @@ export default function DashboardSidebar({
   activeItem,
   setActiveItem,
 }: DashboardSidebarProps) {
-  const navItems: SidebarItem[] =
-    roleConfig[role]?.sidebar ?? roleConfig['learner'].sidebar;
-
-  const pathname = usePathname();
+  const navItems: SidebarItem[] = roleConfig[role]?.sidebar ?? roleConfig['learner'].sidebar;
 
   const handleClick = (id: string) => setActiveItem(id);
 
   return (
     <aside
-      className={`dashboard-sidebar flex flex-col bg-black text-white transition-all duration-300 ${
+      className={`dashboard-sidebar flex flex-col bg-gray-900 text-white transition-all duration-300 ${
         collapsed ? 'w-16' : 'w-60'
       }`}
     >
@@ -42,7 +38,7 @@ export default function DashboardSidebar({
       </button>
 
       {/* Main Navigation */}
-      <nav className="flex flex-col gap-2 p-2 flex-1 overflow-auto">
+      <nav className="flex flex-col flex-1 gap-2 p-2 overflow-auto">
         {navItems.map((item) => (
           <Link
             key={item.id}
@@ -69,7 +65,7 @@ export default function DashboardSidebar({
       </nav>
 
       {/* Bottom Items */}
-      <div className="mt-auto flex flex-col gap-2 p-2">
+      <div className="flex flex-col gap-2 p-2 mt-auto">
         {bottomItems.map((item) => (
           <Link
             key={item.id}

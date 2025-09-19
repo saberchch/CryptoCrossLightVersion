@@ -20,14 +20,16 @@ export default function QuizCard({ quiz }: QuizCardProps) {
     }
   };
 
+  const placeholderImage = '/images/quiz-placeholder.png'; // Add a placeholder image in public/images/
+
   return (
-    <Link href={`/quiz/${quiz.id}`}>
-      <Card className="quiz-card"
+    <Link href={`/quizzes/${quiz.id}`}>
+      <Card className="quiz-card hover:shadow-lg transition-shadow duration-300"
         header={(
           <>
-            <h3 className="card-title">{quiz.title}</h3>
-            <span className={`difficulty-badge ${getDifficultyClass(quiz.difficulty)}`}>
-              {quiz.difficulty}
+            <h3 className="card-title">{quiz.title || 'Untitled Quiz'}</h3>
+            <span className={`difficulty-badge ${getDifficultyClass(quiz.difficulty || 'Beginner')}`}>
+              {quiz.difficulty || 'Beginner'}
             </span>
           </>
         )}
@@ -38,20 +40,30 @@ export default function QuizCard({ quiz }: QuizCardProps) {
                 <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                {formatDuration(quiz.duration)}
+                {formatDuration(quiz.duration ?? 0)}
               </span>
               <span className="flex items-center">
                 <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                {quiz.questions.length} questions
+                {quiz.questions?.length ?? 0} questions
               </span>
             </div>
-            <span className="gold-accent font-medium">Pass: {quiz.passingScore}%</span>
+            <span className="gold-accent font-medium">Pass: {quiz.passingScore ?? 0}%</span>
           </div>
         )}
       >
-        <p className="text-gray-700">{quiz.description}</p>
+        {/* Quiz image */}
+        <div className="w-full h-40 bg-gray-200 rounded-md mb-4 flex items-center justify-center text-gray-400 text-sm overflow-hidden">
+          <img
+            src={quiz.image || placeholderImage}
+            alt={quiz.title || 'Quiz Image'}
+            className="w-full h-full object-cover rounded-md"
+          />
+        </div>
+
+        <p className="text-gray-700">{quiz.description || 'No description available'}</p>
+
         <div className="mt-4">
           <span className="btn-primary inline-flex items-center gap-2">
             <span>Start Quiz</span>

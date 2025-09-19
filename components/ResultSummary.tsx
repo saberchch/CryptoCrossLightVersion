@@ -66,7 +66,7 @@ export default function ResultSummary({ result, quizTitle }: ResultSummaryProps)
             <div className="flex justify-between items-center">
               <span className="text-gray-600">Completion Date:</span>
               <span className="font-semibold">
-                {result.completedAt.toLocaleDateString('en-US', {
+                {new Date(result.completedAt).toLocaleDateString('en-US', {
                   year: 'numeric',
                   month: 'short',
                   day: 'numeric',

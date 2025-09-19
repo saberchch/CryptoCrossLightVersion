@@ -5,6 +5,15 @@
   "difficulty": "Beginner",
   "duration": 40,
   "passingScore": 70,
+  "privacy": "public",
+  "status": "published",
+  "creator": {
+    "id": "user-123",
+    "name": "Alice Johnson",
+    "email": "alice@example.com"
+  },
+  "createdAt": "2025-09-18T00:00:00.000Z",
+  "type": "quiz",
   "questions": [
     {
       "id": 1,

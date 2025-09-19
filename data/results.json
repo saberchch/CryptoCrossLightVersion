@@ -1,3 +1,95 @@
 [
-  
+  {
+    "id": "result-1758302797403",
+    "quizId": "bitcoin-basics",
+    "studentEmail": "saberchaabani94@gmail.com",
+    "studentName": "SABER",
+    "score": 100,
+    "passed": true,
+    "answers": [
+      {
+        "questionId": 1,
+        "selectedAnswer": 1
+      },
+      {
+        "questionId": 2,
+        "selectedAnswer": 1
+      },
+      {
+        "questionId": 3,
+        "selectedAnswer": 1
+      },
+      {
+        "questionId": 4,
+        "selectedAnswer": 1
+      },
+      {
+        "questionId": 5,
+        "selectedAnswer": 0
+      }
+    ],
+    "completedAt": "2025-09-19T17:26:36.912Z"
+  },
+  {
+    "id": "result-1758303000805",
+    "quizId": "bitcoin-basics",
+    "studentEmail": "saberchaabani94@gmail.com",
+    "studentName": "SABER",
+    "score": 100,
+    "passed": true,
+    "answers": [
+      {
+        "questionId": 1,
+        "selectedAnswer": 1
+      },
+      {
+        "questionId": 2,
+        "selectedAnswer": 1
+      },
+      {
+        "questionId": 3,
+        "selectedAnswer": 1
+      },
+      {
+        "questionId": 4,
+        "selectedAnswer": 1
+      },
+      {
+        "questionId": 5,
+        "selectedAnswer": 0
+      }
+    ],
+    "completedAt": "2025-09-19T17:30:00.583Z"
+  },
+  {
+    "id": "result-1758303033003",
+    "quizId": "bitcoin-basics",
+    "studentEmail": "saberchaabani94@gmail.com",
+    "studentName": "SABER",
+    "score": 100,
+    "passed": true,
+    "answers": [
+      {
+        "questionId": 1,
+        "selectedAnswer": 1
+      },
+      {
+        "questionId": 2,
+        "selectedAnswer": 1
+      },
+      {
+        "questionId": 3,
+        "selectedAnswer": 1
+      },
+      {
+        "questionId": 4,
+        "selectedAnswer": 1
+      },
+      {
+        "questionId": 5,
+        "selectedAnswer": 0
+      }
+    ],
+    "completedAt": "2025-09-19T17:30:32.987Z"
+  }
 ]

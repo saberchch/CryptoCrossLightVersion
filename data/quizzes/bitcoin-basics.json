@@ -5,6 +5,7 @@
   "difficulty": "Beginner",
   "duration": 10,
   "passingScore": 70,
+  "privacy": "public",
   "questions": [
     {
       "id": 1,
@@ -68,5 +69,3 @@
     }
   ]
 }
-
-

@@ -1,9 +1,12 @@
 'use client';
 
-import React, { ReactNode } from 'react';
+import React, { useState } from 'react';
+import QuizzesPage from '/home/saberch/CryptoCross_lightv/components/dashboard/pages/DashboardQuizList';
+import QuizPage from '/home/saberch/CryptoCross_lightv/components/dashboard/pages/DashboardQuiz';
+import ResultPage from '/home/saberch/CryptoCross_lightv/components/dashboard/pages/DashboardQuizResult';
+import CertificatePage from '/home/saberch/CryptoCross_lightv/components/dashboard/pages/DashboardCertificate';
 
-export interface DashboardMainProps {
-  children?: ReactNode;
+interface DashboardMainProps {
   activeItem: string;
   userName: string;
   walletBalance: string;
@@ -17,20 +20,43 @@ export default function DashboardMain({
   walletBalance,
   subscriptionName,
   subscriptionPlan,
-  children
 }: DashboardMainProps) {
+
+  // For simplicity, store quizId and view mode (quiz, result, certificate)
+  const [currentQuizId, setCurrentQuizId] = useState<string | null>(null);
+  const [viewMode, setViewMode] = useState<'quiz' | 'result' | 'certificate'>('quiz');
+
+  const renderContent = () => {
+    switch(activeItem) {
+      case 'dashboard':
+        return <p>Main Dashboard Content Here</p>;
+
+      case 'quizzes':
+        if (!currentQuizId) {
+          // Show list of available quizzes
+          return <QuizzesPage onSelectQuiz={(id: string) => { 
+            setCurrentQuizId(id); 
+            setViewMode('quiz'); 
+          }} />;
+        } else {
+          // Show selected quiz / result / certificate
+          if (viewMode === 'quiz') return <QuizPage quizId={currentQuizId} onFinish={() => setViewMode('result')} />;
+          if (viewMode === 'result') return <ResultPage quizId={currentQuizId} onGenerateCertificate={() => setViewMode('certificate')} />;
+          if (viewMode === 'certificate') return <CertificatePage quizId={currentQuizId} />;
+        }
+        break;
+
+      default:
+        return <p>Content not available</p>;
+    }
+  };
+
   return (
-    <main className="dashboard-main p-6 flex-1">
-      <h1 className="text-2xl font-bold mb-4">Welcome, {userName}</h1>
+    
 
-      <div className="mb-4">
-        <p><strong>Wallet Balance:</strong> {walletBalance}</p>
-        <p><strong>Subscription:</strong> {subscriptionName} ({subscriptionPlan})</p>
-        <p><strong>Current Section:</strong> {activeItem}</p>
+      <div className="mt-6 flex-1 min-h-0">
+        {renderContent()}
       </div>
-
-      {/* Dynamic content can be passed as children */}
-      {children}
-    </main>
+    
   );
 }

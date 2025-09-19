@@ -12,7 +12,6 @@ export interface DashboardHeaderProps {
   onToggleRightPanel: () => void;
 }
 
-
 export default function DashboardHeader({
   user,
   rightPanelVisible = true,
@@ -21,25 +20,26 @@ export default function DashboardHeader({
   const { logout } = useAuth();
 
   return (
-    <header className="dashboard-header flex justify-between items-center p-4 bg-gray-900 text-white shadow-md">
-      {/* Logo */}
+    <header className="dashboard-header flex justify-between items-center px-6 py-4 bg-gray-900 text-white shadow-md">
+      {/* Logo Section */}
       <div className="dashboard-logo flex items-center gap-2">
         <svg
-          className="dashboard-logo-icon"
+          className="dashboard-logo-icon w-8 h-8"
           fill="none"
           viewBox="0 0 48 48"
           xmlns="http://www.w3.org/2000/svg"
         >
-          {/* Add your logo paths */}
+          {/* Add actual logo paths here */}
         </svg>
         <h2 className="dashboard-logo-text font-bold text-xl">CryptoCross</h2>
       </div>
 
-      {/* Controls */}
+      {/* Controls Section */}
       <div className="dashboard-controls flex items-center gap-4">
         {/* Search */}
         <div className="relative">
           <input
+            type="text"
             className="search-input rounded-md px-3 py-1.5 bg-gray-800 text-white placeholder-gray-400"
             placeholder="Search"
           />
@@ -51,27 +51,21 @@ export default function DashboardHeader({
         </div>
 
         {/* Notifications */}
-        <button className="relative p-2 rounded-md hover:bg-gray-800 transition-colors">
+        <button className="relative p-2 rounded-md hover:bg-white-800 transition-colors">
           <svg fill="currentColor" height="24" width="24" viewBox="0 0 256 256">
-            {/* Add bell icon */}
+            {/* Bell icon */}
           </svg>
           <span className="absolute top-0 right-0 w-2 h-2 rounded-full bg-red-500"></span>
         </button>
 
-        {/* Right Panel Toggle */}
-        <button
-          onClick={onToggleRightPanel}
-          className="px-2 py-1 rounded-md border border-yellow-500 text-yellow-400 hover:bg-yellow-400/20 transition-colors"
-        >
-          {rightPanelVisible ? 'Hide Panel' : 'Show Panel'}
-        </button>
+        
 
         {/* User Avatar */}
         {user && (
           <div
             className="user-avatar w-10 h-10 rounded-full bg-gray-700 bg-cover bg-center"
             style={{ backgroundImage: user.avatarUrl ? `url("${user.avatarUrl}")` : undefined }}
-          ></div>
+          />
         )}
 
         {/* Logout */}

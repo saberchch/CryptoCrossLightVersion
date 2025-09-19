@@ -25,6 +25,7 @@ export interface Quiz {
     role: string;
   };
   createdAt?: string;
+  image?: string; // <-- added optional image field
 }
 
 export interface QuizResult {
@@ -42,9 +43,10 @@ export interface QuizResult {
 // Load all quizzes from individual files
 export async function loadQuizzes(): Promise<Quiz[]> {
   try {
-    const baseUrl = process.env.NODE_ENV === 'production' 
-      ? process.env.RENDER_EXTERNAL_URL || 'https://cryptocrosslightversion-1.onrender.com' 
-      : 'http://localhost:3000';
+    const baseUrl =
+      process.env.NODE_ENV === 'production'
+        ? process.env.RENDER_EXTERNAL_URL || 'https://cryptocrosslightversion-1.onrender.com'
+        : 'http://localhost:3000';
     const response = await fetch(`${baseUrl}/api/quizzes`, { cache: 'no-store' });
     if (!response.ok) {
       throw new Error('Failed to fetch quizzes');
@@ -63,26 +65,43 @@ export async function loadQuiz(id: string): Promise<Quiz | null> {
   return quizzes.find(quiz => quiz.id === id) || null;
 }
 
+
+// Load a full quiz by ID
+export async function loadQuizById(id: string): Promise<Quiz | null> {
+  try {
+    const res = await fetch(`/api/quizzes/${id}`, { cache: 'no-store' });
+    if (!res.ok) return null;
+    const quiz: Quiz = await res.json();
+    return quiz;
+  } catch (e) {
+    console.error('Failed to load quiz by ID:', e);
+    return null;
+  }
+}
+
 // Calculate quiz score
-export function calculateScore(quiz: Quiz, answers: { questionId: number; selectedAnswer: number }[]): {
+export function calculateScore(
+  quiz: Quiz,
+  answers: { questionId: number; selectedAnswer: number }[]
+): {
   score: number;
   totalQuestions: number;
   correctAnswers: number;
   passed: boolean;
 } {
   let correctAnswers = 0;
-  
+
   answers.forEach(answer => {
     const question = quiz.questions.find(q => q.id === answer.questionId);
     if (question && question.correctAnswer === answer.selectedAnswer) {
       correctAnswers++;
     }
   });
-  
+
   const totalQuestions = quiz.questions.length;
   const score = Math.round((correctAnswers / totalQuestions) * 100);
   const passed = score >= quiz.passingScore;
-  
+
   return {
     score,
     totalQuestions,

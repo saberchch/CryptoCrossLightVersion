@@ -44,7 +44,7 @@ export default function DashboardPage() {
   if (!user) {
     return (
       <DashboardLayout
-        role="learner"
+        
         collapsed={sidebarCollapsed}
         toggleSidebar={toggleSidebar}
         activeItem={activeItem}
@@ -67,7 +67,7 @@ export default function DashboardPage() {
 
   return (
     <DashboardLayout
-      role={user.role ?? 'learner'}
+      
       collapsed={sidebarCollapsed}
       toggleSidebar={toggleSidebar}
       activeItem={activeItem}
