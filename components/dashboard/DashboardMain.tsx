@@ -1,10 +1,10 @@
 'use client';
 
 import React, { useState } from 'react';
-import QuizzesPage from '/home/saberch/CryptoCross_lightv/components/dashboard/pages/DashboardQuizList';
-import QuizPage from '/home/saberch/CryptoCross_lightv/components/dashboard/pages/DashboardQuiz';
-import ResultPage from '/home/saberch/CryptoCross_lightv/components/dashboard/pages/DashboardQuizResult';
-import CertificatePage from '/home/saberch/CryptoCross_lightv/components/dashboard/pages/DashboardCertificate';
+import QuizzesPage from './pages/DashboardQuizList';
+import QuizPage from './pages/DashboardQuiz';
+import ResultPage from './pages/DashboardQuizResult';
+import CertificatePage from './pages/DashboardCertificate';
 
 interface DashboardMainProps {
   activeItem: string;
